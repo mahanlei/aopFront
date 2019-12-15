@@ -28,6 +28,7 @@
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "html-webpack-plugin": "^3.2.0",
     "immutable": "^4.0.0-rc.12",
+    "jsx-loader": "^0.13.2",
     "less": "^3.9.0",
     "less-loader": "^5.0.0",
     "react": "^16.8.6",

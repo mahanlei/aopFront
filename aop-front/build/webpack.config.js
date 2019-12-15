@@ -13,7 +13,7 @@ module.exports = {
   resolve: {
     // 自动解析一下拓展，当我们要引入src/index.ts的时候，只需要写src/index即可
     // 后面我们讲TS模块解析的时候，写src也可以
-    extensions: [".tsx", ".ts", ".js"]
+    extensions: [".tsx", ".ts", ".js", ".jsx"]
   },
   module: {
     // 配置以.ts/.tsx结尾的文件都用ts-loader解析
@@ -76,7 +76,8 @@ module.exports = {
       {
         test: /\.(png|jpg|jpeg|gif)$/,
         use: 'url-loader'
-      }
+      },
+      {test: /\.jsx$/, loader: "jsx-loader"}
     ]
   },
   // 指定编译后是否生成source-map，这里判断如果是生产打包环境则不生产source-map
@@ -87,7 +88,7 @@ module.exports = {
     stats: "errors-only",
     compress: false,
     host: "localhost",
-    port: 8089
+    port: 8080,
   },
   // 这里用到两个插件，所以首先我们要记着安装
   // npm install html-webpack-plugin clean-webpack-plugin -D

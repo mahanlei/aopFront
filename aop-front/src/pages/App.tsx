@@ -1,58 +1,62 @@
 import React from "react";
 import {
-  BrowserRouter as Router,
+  BrowserRouter as Router, IndexRoute,
   Switch,
   Route,
-  Link
+  Link,
+  withRouter,
+  Redirect
+
 } from "react-router-dom";
 import { Menu } from 'antd'
-import Search from './Search'
+import Search from './search/Search'
+import EdgeSearch from './search/EdgeSearch'
+import EventInfo from './EventInfo'
+import PropTypes from 'prop-types'
 const { SubMenu } = Menu
+@withRouter
 class App extends React.Component {
-  
-    // state = {
-    //   current: 'search'
-    // }
-  
+  constructor(props: any) {
+    super(props)
+    this.state = {}
+  }
 
   handleClick = (e) => {
-    console.log('click', e)
+    this.props.history.push({ pathname: `/${e.keyPath[0]}` })
   }
   render() {
     return (
-      <Router>
-        <div>
-          
-          <Menu
-            onClick={this.handleClick}
-            theme="dark"
-            mode="horizontal" 
-            style={{paddingLeft: '10%', height: 60, fontSize: 18, lineHeight: '60px'}}
-            >
-            <SubMenu title="检索" key="search">
-              <Menu.Item key="ke">KE</Menu.Item>
-              <Menu.Item key="ker">KER</Menu.Item>
-              <Menu.Item key="aop">AOP</Menu.Item>
-            </SubMenu>
-          </Menu>
-          {/* A <Switch> looks through its children <Route>s and
+      // <Router>
+      <div>
+
+        <Menu
+          onClick={this.handleClick}
+          theme="dark"
+          mode="horizontal"
+          style={{ paddingLeft: '10%', height: 60, fontSize: 18, lineHeight: '60px' }}
+        >
+          <SubMenu title="搜索" key="search">
+            <Menu.Item key="events">KE</Menu.Item>
+            <Menu.Item key="edges">KER</Menu.Item>
+            <Menu.Item key="aops">AOP</Menu.Item>
+          </SubMenu>
+        </Menu>
+        {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-            <div style={{backgroundColor: 'rgb(244,245,246)'}}>
+        <div style={{ backgroundColor: 'rgb(244,245,246)' }} >
           <Switch>
-            <Route path="/search">
-              <Search />
-            </Route>
-            {/* <Route path="/users">
-              <Users />
-            </Route> */}
-            <Route path="/">
-              <Search />
-            </Route>
+            {/* <Route path="/"  component={EdgeSearch}/> */}
+            {/* <IndexRoute component={EdgeSearch}/> */}
+            <Route path="/edges" component={EdgeSearch} />
+            <Route path="/events" component={Search} />
+            <Route path="/aops" component={Search} />
+            <Route path="/event/:eventId" component={EventInfo} />
           </Switch>
-          </div>
         </div>
-      </Router>
+      </div>
+      // </Router>
     )
   }
 }
+
 export default App
