@@ -8,11 +8,11 @@ import {
   Redirect
 
 } from "react-router-dom";
-import { Menu } from 'antd'
+import { Menu,Icon } from 'antd'
 import Search from './search/Search'
 import EdgeSearch from './search/EdgeSearch'
 import EventInfo from './EventInfo'
-import PropTypes from 'prop-types'
+import './App.less'
 const { SubMenu } = Menu
 @withRouter
 class App extends React.Component {
@@ -27,7 +27,7 @@ class App extends React.Component {
   render() {
     return (
       // <Router>
-      <div>
+      <div className='app'>
 
         <Menu
           onClick={this.handleClick}
@@ -35,7 +35,10 @@ class App extends React.Component {
           mode="horizontal"
           style={{ paddingLeft: '10%', height: 60, fontSize: 18, lineHeight: '60px' }}
         >
-          <SubMenu title="搜索" key="search">
+          <SubMenu title={<div style={{display: 'flex'}}>
+            <Icon type="search" id="searchIcon"/>
+            搜索</div>} 
+            key="search">
             <Menu.Item key="events">KE</Menu.Item>
             <Menu.Item key="edges">KER</Menu.Item>
             <Menu.Item key="aops">AOP</Menu.Item>

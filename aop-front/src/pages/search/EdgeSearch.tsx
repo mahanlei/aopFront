@@ -3,7 +3,7 @@ import './Search.less'
 import { Input, Select, Row, Col, Icon, Form, Button, Table } from 'antd'
 import { fromJS, toJS } from 'immutable'
 import { fetchKerSearchResult } from '../../services/SearchServices.js'
-class EdgeSearch extends React.Component {
+class EdgeSearch extends React.Component<any,any> {
     constructor(props) {
         super(props)
         this.state = {

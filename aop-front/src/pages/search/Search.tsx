@@ -5,6 +5,63 @@ import { fromJS, toJS } from 'immutable'
 import { ke_attr } from '../../utils/ChAndEn.js'
 import { fetchSearchResult,fetchKEInfo } from '../../services/SearchServices.js'
 const { Option, OptGroup } = Select
+export const keColumns = [
+  {
+    title: 'ID',
+    dataIndex: 'id',
+  },
+  {
+    title: '英文名',
+    dataIndex: 'title',
+  
+  },
+  {
+    title: '中文名',
+    dataIndex: 'chinese',
+  
+  },
+  {
+    title: '属性',
+    children: [
+      {
+        title: '物种',
+        dataIndex: 'species',
+        width: 190,
+      },
+      {
+        title: '性别',
+        dataIndex: 'sex',
+        width: 70,
+      },
+      {
+        title: '生命阶段',
+        dataIndex: 'lifeCycle',
+        width: 160,
+      },
+      {
+        title: '器官',
+        dataIndex: 'organ',
+        width: 90,
+      },
+      {
+        title: '癌症',
+        dataIndex: 'cancer',
+        width: 80,
+      },
+      {
+        title: '存活率',
+        dataIndex: 'survivalRates',
+        width: 80,
+      },
+      {
+        title: '生物水平',
+        dataIndex: 'level',
+        width:90,
+      },
+
+    ]
+  },
+];
 class Search extends React.Component {
 
   constructor(props) {
@@ -137,9 +194,9 @@ this.props.history.push(`/event/${record.id}`)
                     </Select>
                   </Form.Item>
                 </Col>
-                <Col span={6}>
+                <Col span={5}>
                   <Form.Item className='search-item'>
-                    <Input placeholder="属性值" value={checkType.get('value')} onChange={(e) => this.handleChangeCheckTypeValue(index, e.target.value)} />
+                    <Input placeholder="属性值" value={checkType.get('value')} style={{height: 30}} onChange={(e) => this.handleChangeCheckTypeValue(index, e.target.value)} />
                   </Form.Item>
                 </Col>
                 {index !== 0 ? (
@@ -196,7 +253,7 @@ this.props.history.push(`/event/${record.id}`)
       {this.renderCheckTypes()}
     </React.Fragment>
   }
-  renderTableData() {
+ renderTableData() {
     const { tableData } = this.state
     let dataSource = []
     for (let i = 0; i < tableData.length; i++) {
@@ -205,67 +262,13 @@ this.props.history.push(`/event/${record.id}`)
         ...tableData[i]
       })
     }
-
-    const columns = [
-      {
-        title: 'ID',
-        dataIndex: 'id',
-      },
-      {
-        title: '英文名',
-        dataIndex: 'title',
-        width: 270,
-        // onClick={() => {console.log('查看详情')}},
-      },
-      {
-        title: '中文名',
-        dataIndex: 'chinese',
-        width: 300,
-        // onClick={() => {console.log('查看详情')}}
-      },
-      {
-        title: '属性',
-        children: [
-          {
-            title: '物种',
-            dataIndex: 'species',
-          },
-          {
-            title: '性别',
-            dataIndex: 'sex',
-          },
-          {
-            title: '生命阶段',
-            dataIndex: 'lifeCycle',
-          },
-          {
-            title: '器官',
-            dataIndex: 'organ',
-          },
-          {
-            title: '癌症',
-            dataIndex: 'cancer',
-          },
-          {
-            title: '存活率',
-            dataIndex: 'survivalRates',
-          },
-          {
-            title: '生物水平',
-            dataIndex: 'level',
-          },
-
-        ]
-      },
-    ];
     return (
       <Table dataSource={dataSource} 
       loading={this.state.loading} 
-      columns={columns} 
+      columns={keColumns} 
       bordered
-      onRowClick={record => 
+      onRowClick={ record => 
          this.handleClickRow(record)
-     
       } />
     )
   }
