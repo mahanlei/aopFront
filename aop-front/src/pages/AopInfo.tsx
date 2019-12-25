@@ -1,8 +1,7 @@
 import React from 'react'
-import { Input, Select, Row, Col, Icon, Form, Button, Table } from 'antd'
+import {  Select } from 'antd'
 import { ke_attr } from '../utils/ChAndEn.js'
 import { fetchAopInfo, fetchAopNodes } from '../services/AopService'
-import { keColumns } from '../pages/search/Search'
 import './AopInfo.less'
 import echarts from 'echarts'
 const { Option, OptGroup } = Select
@@ -76,7 +75,7 @@ class AopInfo extends React.Component<any, any> {
         var myChart = echarts.init(document.getElementById('graphPanel'))
         let option = {
             title: {
-                text: 'Graph 简单示例'
+                text: 'AOP链图'
             },
             tooltip: {},
             animationDurationUpdate: 1500,

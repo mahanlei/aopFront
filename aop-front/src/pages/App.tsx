@@ -13,6 +13,7 @@ import Search from './search/Search'
 import EdgeSearch from './search/EdgeSearch'
 import EventInfo from './EventInfo'
 import AopInfo from './AopInfo'
+import SingleForcast from './SingleForcast'
 import './App.less'
 const { SubMenu } = Menu
 @withRouter
@@ -36,7 +37,7 @@ class App extends React.Component {
           mode="horizontal"
           style={{ paddingLeft: '10%', height: 60, fontSize: 18, lineHeight: '60px' }}
         >
-          <SubMenu title={<div style={{display: 'flex'}}>
+          <SubMenu title={<div style={{display: 'flex', top: -10}}>
             <Icon type="search" id="searchIcon"/>
             搜索</div>} 
             key="search">
@@ -44,6 +45,9 @@ class App extends React.Component {
             <Menu.Item key="edges">KER</Menu.Item>
             <Menu.Item key="aops">AOP</Menu.Item>
           </SubMenu>
+          <Menu.Item key="singleForecast" style={{height: 60}}>
+            单一毒性预测
+          </Menu.Item>
         </Menu>
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
@@ -56,6 +60,7 @@ class App extends React.Component {
             <Route path="/aops" component={Search} />
             <Route path="/event/:eventId" component={EventInfo} />
             <Route path="/aop/:aopId" component={AopInfo} />
+            <Route path="/singleForcast" component={SingleForcast} />
           </Switch>
         </div>
       </div>
