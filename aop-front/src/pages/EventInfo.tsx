@@ -10,6 +10,7 @@ class EventInfo extends React.Component<any, any> {
         super(props)
         this.state = {
             info: {
+                'ID': '',
                 '名称': '',
                 '中文名': '',
                 '物种': '',
@@ -40,6 +41,7 @@ class EventInfo extends React.Component<any, any> {
             }
             tempInfo['名称'] = res.title
             tempInfo['中文名'] = res.chinese
+            tempInfo['ID'] = eid
             this.setState({
                 info: tempInfo
             })
@@ -67,6 +69,7 @@ class EventInfo extends React.Component<any, any> {
             }
         }
         return <div className="infoCon">
+                <h3 style={{ marginBottom: '18px' }}>属性信息</h3>
             {infoList.map(v => {
                 return (<div className="item">
                     <div className="attrLabel">{v.key}:</div>

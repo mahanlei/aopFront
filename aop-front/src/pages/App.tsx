@@ -12,6 +12,7 @@ import { Menu,Icon } from 'antd'
 import Search from './search/Search'
 import EdgeSearch from './search/EdgeSearch'
 import EventInfo from './EventInfo'
+import AopInfo from './AopInfo'
 import './App.less'
 const { SubMenu } = Menu
 @withRouter
@@ -54,6 +55,7 @@ class App extends React.Component {
             <Route path="/events" component={Search} />
             <Route path="/aops" component={Search} />
             <Route path="/event/:eventId" component={EventInfo} />
+            <Route path="/aop/:aopId" component={AopInfo} />
           </Switch>
         </div>
       </div>
