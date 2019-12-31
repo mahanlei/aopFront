@@ -46,22 +46,30 @@ class AopInfo extends React.Component<any, any> {
         })
         let nodeTemp=[]
         let linkTemp=[]
+
         fetchAopNodes(eid).then(res =>{
+            console.log('res', res)
             res.map((item,k) => {
-                let xp= k*100+300
-                if(k == res.length-1){
-                    let node1 = {name: `KE: ${item.sourceId}`,x: xp, y:'300', value: item.sourceId}
-                    let node2 = {name: `AO: ${item.targetId}`,x: xp+100, y:'300', value: item.targetId}
+                let xp= k*50+50
+                // if(k == res.length-1){
+                    let node1 = {name: `${item.sourceId}`,x: xp, y:'200', value: item.sourceId}
+                    let node2 = {name: `${item.targetId}`,x: xp, y:'270', value: item.targetId}
+                    let hasNode1 = nodeTemp.find(v => v.name == item.sourceId)
+                    if(hasNode1 == undefined){ 
                     nodeTemp.push(node1)
+                    }
+                    let hasNode2 = nodeTemp.find(v => v.name == item.targetId)
+                    if(hasNode2 == undefined){
                     nodeTemp.push(node2)
-                } else if(k == 0){
-                    let node = {name: `MIE: ${item.sourceId}`,x: xp, y:'300',value: item.sourceId}
-                    nodeTemp.push(node)
-                }else{
-                    let node = {name: `KE:${item.sourceId}`,x: xp, y:'300',value: item.sourceId}
-                    nodeTemp.push(node)
-                }
-                let link = {source: k, target: k+1}
+                    }
+                // } else if(k == 0){
+                //     let node = {name: `MIE: ${item.sourceId}`,x: xp, y:'300',value: item.sourceId}
+                //     nodeTemp.push(node)
+                // }else{
+                //     let node = {name: `KE:${item.sourceId}`,x: xp, y:'300',value: item.sourceId}
+                //     nodeTemp.push(node)
+                // }
+                let link = {source: node1.name, target: node2.name}
                linkTemp.push(link)
             })
             this.setState({
@@ -71,6 +79,7 @@ class AopInfo extends React.Component<any, any> {
         })
       
     }
+   
     getChartOption = () => {
         var myChart = echarts.init(document.getElementById('graphPanel'))
         let option = {
