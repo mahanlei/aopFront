@@ -15,6 +15,7 @@ import EventInfo from './EventInfo'
 import AopInfo from './AopInfo'
 import SingleForcast from './SingleForcast'
 import './App.less'
+import KeAoInfo from "./KeAoInfo";
 const { SubMenu } = Menu
 @withRouter
 class App extends React.Component {
@@ -45,7 +46,7 @@ class App extends React.Component {
             <Menu.Item key="edges">KER</Menu.Item>
             <Menu.Item key="aops">AOP</Menu.Item>
           </SubMenu>
-          <Menu.Item key="singleForecast" style={{height: 60}}>
+          <Menu.Item key="singleForcast" style={{height: 60}}>
             单一毒性预测
           </Menu.Item>
         </Menu>
@@ -61,6 +62,7 @@ class App extends React.Component {
             <Route path="/event/:eventId" component={EventInfo} />
             <Route path="/aop/:aopId" component={AopInfo} />
             <Route path="/singleForcast" component={SingleForcast} />
+            <Route path="/keao" component={KeAoInfo} />
           </Switch>
         </div>
       </div>
