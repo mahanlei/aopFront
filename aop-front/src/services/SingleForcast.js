@@ -1,7 +1,7 @@
 import { serverIP } from "../utils/GlobalConstants"
 
 export function fetchToxInfo(queryName) {
-    return fetch(`${serverIP}/api/tox/${queryName}`, {
+    return fetch(`${serverIP}/api/tox/${queryName}?size=${2000}`, {
         method: 'GET',
         mode: "cors",
         headers: new Headers({

@@ -26,24 +26,33 @@ class SingleForcast extends React.Component<any,any> {
 
         fetchKEandAO(bioassay,effect).then(res => {
             let arr = [];
+            let count=0;
+            const tableSize=10;
             res.map(temp=>{
                 const len = temp.aos.length;
-                console.log(temp)
                 temp.aos.map((aoItem,index)=>{
+                    count=count+1;
+                    let tempSize=index === 0 ? len : 0;
+                    if(tempSize===0&&count%tableSize===1&&count>tableSize){
+                        tempSize=len-index;
+                    }
                     arr = [
                         ...arr,
                         {
                             keId:temp.ke.id,
+                            keTitle:temp.ke.title,
                             keChinese:temp.ke.chinese,
                             keSpecies:temp.ke.species,
                             keLevel:temp.ke.level,
                             aoId:aoItem.id,
+                            aoTitle:aoItem.title,
                             aoChinese:aoItem.chinese,
                             aoSpecies:aoItem.species,
                             aoOrgan:aoItem.organ,
                             aoCancer:aoItem.cancer,
                             aoLevel:aoItem.level,
-                            aoSpan:index === 0 ? len : 0  // 各自的rowSpan计算出来放入对象
+                            aoSpan:tempSize,
+                            count:count
                         }
                     ]
                     return arr
@@ -70,7 +79,7 @@ class SingleForcast extends React.Component<any,any> {
                         title: 'ID',
                         dataIndex: 'keId',
                         render: (value, row) => {
-                            console.log(row)
+                            
                             return {
                                 children: value,
                                 props: {rowSpan:row.aoSpan},
@@ -78,7 +87,17 @@ class SingleForcast extends React.Component<any,any> {
                         },
                     },
                     {
-                        title: '名称',
+                        title: '英文名',
+                        dataIndex: 'keTitle',
+                        render: (value, row) => {
+                            return {
+                                children: value,
+                                props: {rowSpan:row.aoSpan},
+                            };
+                        },
+                    },
+                    {
+                        title: '中文名',
                         dataIndex: 'keChinese',
                         render: (value, row) => {
                             return {
@@ -119,7 +138,11 @@ class SingleForcast extends React.Component<any,any> {
                         dataIndex: 'aoId',
                     },
                     {
-                        title: '名称',
+                        title: '英文名',
+                        dataIndex: 'aoTitlw',
+                    },
+                    {
+                        title: '中文名',
                         dataIndex: 'aoChinese',
                     },
                     {
