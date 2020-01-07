@@ -80,7 +80,7 @@ class EventInfo extends React.Component<any, any> {
         </div>
     }
     handleClickRow = (record) => {
-        this.props.history.push(`/event/${record.id}`)
+        this.props.history.push(`/aop/${record.id}`)
     }
     renderBioassays() {
         const { bioassays } = this.state

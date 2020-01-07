@@ -15,7 +15,7 @@ export function fetchAopInfo(id) {
         return err
     })
 }
-export function fetchAopNodes(id) {
+export function fetchAopEdges(id) {
   
     return fetch(`${serverIP}/api/edges/search/findByAopId?aopId=${id}`, {
         method: 'GET',
@@ -27,6 +27,21 @@ export function fetchAopNodes(id) {
 
     }).then(res => res.json()).then((json) => {
         return json
+    }).catch((err) => {
+        return err
+    })
+}
+export function fetchAopNodes(id){
+    return fetch(`${serverIP}/api/chains/search/findByAopId?aopId=${id}`, {
+        method: 'GET',
+        mode: "cors",
+        headers: new Headers({
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        }),
+
+    }).then(res => res.json()).then((json) => {
+        return json._embedded.chains
     }).catch((err) => {
         return err
     })

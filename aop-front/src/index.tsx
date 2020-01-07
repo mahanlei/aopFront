@@ -7,7 +7,6 @@ const Root = () => {
   return (
       <HashRouter >
           <Route path={`/`} component={App}/>
-          <Redirect from="/" to="/events" />
       </HashRouter>
   )
 

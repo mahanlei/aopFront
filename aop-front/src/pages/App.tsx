@@ -54,10 +54,10 @@ class App extends React.Component {
         </Menu>
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-        <div style={{ backgroundColor: 'rgb(244,245,246)' }} >
+        <div style={{ backgroundColor: 'rgb(244,245,246)',height:'100vh', overflow:'scroll' }} >
           <Switch>
-            {/* <Route path="/"  component={Dashboard}/>
-            <IndexRoute component={Dashboard}/> */}
+            {/* <Route path="/"  component={Dashboard}/> */}
+            {/* <IndexRoute component={Search}/> */}
             <Route path="/edges" component={EdgeSearch} />
             <Route path="/events" component={Search} />
             <Route path="/aops" component={Search} />
