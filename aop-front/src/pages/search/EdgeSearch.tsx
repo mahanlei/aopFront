@@ -13,6 +13,14 @@ class EdgeSearch extends React.Component<any,any> {
     }
     componentDidMount() {
         // this.getCheckTypeoptions()
+        this.setState({ loading: true })
+        fetchKerSearchResult({}).then(res => {
+            this.setState({
+                loading: false,
+                tableData: res.content,
+            })
+
+        }) 
     }
 
 

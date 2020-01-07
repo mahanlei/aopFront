@@ -52,8 +52,8 @@ class AopInfo extends React.Component<any, any> {
             res.map((item,k) => {
                 let xp= k*50+50
                 // if(k == res.length-1){
-                    let node1 = {name: `${item.sourceId}`,x: xp, y:'200', value: item.sourceId}
-                    let node2 = {name: `${item.targetId}`,x: xp, y:'270', value: item.targetId}
+                    let node1 = {name: `${item.sourceId}`,x: xp, y:'200', tooltip: `${item.sourceId}: ${item.sourceTitle}`}
+                    let node2 = {name: `${item.targetId}`,x: xp, y:'270', tooltip: `${item.targetId}: ${item.targetTitle}`}
                     let hasNode1 = nodeTemp.find(v => v.name == item.sourceId)
                     if(hasNode1 == undefined){ 
                     nodeTemp.push(node1)

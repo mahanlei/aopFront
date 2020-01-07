@@ -14,10 +14,12 @@ import EdgeSearch from './search/EdgeSearch'
 import EventInfo from './EventInfo'
 import AopInfo from './AopInfo'
 import SingleForcast from './SingleForcast'
+import Dashboard from './Dashboard'
 import './App.less'
 import KeAoInfo from "./KeAoInfo";
 const { SubMenu } = Menu
 @withRouter
+
 class App extends React.Component {
   constructor(props: any) {
     super(props)
@@ -54,8 +56,8 @@ class App extends React.Component {
             renders the first one that matches the current URL. */}
         <div style={{ backgroundColor: 'rgb(244,245,246)' }} >
           <Switch>
-            {/* <Route path="/"  component={EdgeSearch}/> */}
-            {/* <IndexRoute component={EdgeSearch}/> */}
+            {/* <Route path="/"  component={Dashboard}/>
+            <IndexRoute component={Dashboard}/> */}
             <Route path="/edges" component={EdgeSearch} />
             <Route path="/events" component={Search} />
             <Route path="/aops" component={Search} />
