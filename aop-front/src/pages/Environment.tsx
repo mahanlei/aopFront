@@ -4,53 +4,17 @@ import { ke_attr } from '../utils/ChAndEn.js'
 import { fetchAopInfo, fetchAopNodes } from '../services/AopService'
 import { keColumns } from '../pages/search/Search'
 import './AopInfo.less'
-import {fetchToxInfo} from '../services/SingleForcast'
+import {fetchAoInfo} from '../services/EnvironmentService'
 // import echarts from 'echarts'
 const { Option, OptGroup } = Select
 class SingleForcast extends React.Component<any,any> {
     constructor(props) {
         super(props)
-        this.tryRestoreComponent();
-        this.itemsChanged = false;  // 本次渲染是否发生了文章列表变化，决定iscroll的refresh调用
-        this.isTouching = false; // 是否在触屏中
-        // this.state = {
-        //     loading: false,
-        //     tableData: [],
-        // }
-
-    }
-    tryRestoreComponent() {
-        let data = window.sessionStorage.getItem(this.props.location.key);
-
-        // 恢复之前状态
-        if (data) {
-            data = JSON.parse(data);
-            this.state = {
-                tableData: data.tableData,
-                isloading: false,
-                loading:false,// 是否处于首屏加载中
-            };
-            this.page = data.page;
-        } else {
-            this.state = {
-                tableData: [],          // 文章列表
-                isloading: true,
-                loading:false,// 是否处于首屏加载中
-            };
-            this.page = 1;  // 当前翻页
+        this.state = {
+            loading: false,
+            tableData: [],
         }
-    }
-    componentWillUnmount() {
-        // 备份当前的页面状态
-        if (!this.state.loading) {
-            let data = {
-                tableData: this.state.tableData,
-                page: this.page,
-            };
-            window.sessionStorage.setItem(this.props.location.key, JSON.stringify(data));
-        } else {
-            window.sessionStorage.removeItem(this.props.location.key);
-        }
+
     }
     renderSearchForm() {
         const { getFieldDecorator } = this.props.form
@@ -62,7 +26,7 @@ class SingleForcast extends React.Component<any,any> {
                             {getFieldDecorator('name', {
                                 rules: [],
                             })(
-                                <Input placeholder="输入CAS号或者英文名称" style={{ width: 300 }} />
+                                <Input placeholder="输入id、中文名称或者英文名称" style={{ width: 300 }} />
                             )}
                         </Form.Item>
                     </Col>
@@ -78,17 +42,27 @@ class SingleForcast extends React.Component<any,any> {
                 dataIndex: 'id',
             },
             {
-                title: 'Bioassay',
-                dataIndex: 'bioassay',
+                title: '英文名称',
+                dataIndex: 'title',
             },
             {
-                title: 'Effect',
-                dataIndex: 'effect',
+                title: '中文名称',
+                dataIndex: 'chinese',
             },
             {
-                title: 'AC50',
-                dataIndex: 'ac50',
-                sorter: (a, b) => a.ac50 - b.ac50,
+                title: '性别',
+                dataIndex: 'sex',
+
+            },
+            {
+                title: '生命阶段',
+                dataIndex: 'lifeCycle',
+
+            },
+            {
+                title: '等级',
+                dataIndex: 'level',
+
             },
         ]
         let dataSource = this.state.tableData
@@ -106,13 +80,12 @@ class SingleForcast extends React.Component<any,any> {
     }
 
     handleClickRow = (record) => {
-        var param = { bioassay: record.bioassay, effect: record.effect};
-        var path = {
-            pathname: "/keao",
-            query: param
-        };
-        this.props.history.push(path);
-
+        // var path = {
+        //     pathname: "/keao",
+        //     query: param
+        // };
+        // this.props.history.push(path);
+        this.props.history.push(`/aopList/${record.id}`)
     }
 
     handleReset = () => {
@@ -125,10 +98,10 @@ class SingleForcast extends React.Component<any,any> {
         this.props.form.validateFields((err, values) => {
             if (err) { return }
             this.setState({ loading: true })
-            fetchToxInfo(values.name).then(res => {
+            fetchAoInfo(values.name).then(res => {
                 this.setState({
                     loading: false,
-                    tableData: res.content,
+                    tableData: res,
                 })
 
             }) //传的参数
@@ -142,7 +115,7 @@ class SingleForcast extends React.Component<any,any> {
             <div className="container">
                 <div className="search">
                     <Form className='ant-advanced-search-form' >
-                        <h3 style={{ marginBottom: '18px' }}>化学品搜索</h3>
+                        <h3 style={{ marginBottom: '18px' }}>AO搜索</h3>
                         {this.renderSearchForm()}
                     </Form>
                     <div style={{ textAlign: 'right' }}>

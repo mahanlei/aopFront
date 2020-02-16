@@ -17,6 +17,9 @@ import SingleForcast from './SingleForcast'
 import Dashboard from './Dashboard'
 import './App.less'
 import KeAoInfo from "./KeAoInfo";
+import {EnvironmentPlugin} from "webpack";
+import Environment from "./Environment";
+import AopList from "./AopList";
 const { SubMenu } = Menu
 @withRouter
 
@@ -51,6 +54,9 @@ class App extends React.Component {
           <Menu.Item key="singleForcast" style={{height: 60}}>
             单一毒性预测
           </Menu.Item>
+          <Menu.Item key="environment" style={{height: 60}}>
+            环境诊断
+          </Menu.Item>
         </Menu>
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
@@ -65,6 +71,8 @@ class App extends React.Component {
             <Route path="/aop/:aopId" component={AopInfo} />
             <Route path="/singleForcast" component={SingleForcast} />
             <Route path="/keao" component={KeAoInfo} />
+            <Route path="/environment" component={Environment} />
+            <Route path="/aopList/:aoId" component={AopList} />
           </Switch>
         </div>
       </div>

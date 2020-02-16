@@ -4,6 +4,7 @@ import { ke_attr } from '../utils/ChAndEn.js'
 import { fetchAopInfo, fetchAopNodes } from '../services/AopService'
 import { keColumns } from '../pages/search/Search'
 import './AopInfo.less'
+import './KeAoInfo.less'
 import {fetchToxInfo,fetchKEandAO} from '../services/SingleForcast'
 // import echarts from 'echarts'
 const { Option, OptGroup } = Select
@@ -44,15 +45,15 @@ class SingleForcast extends React.Component<any,any> {
                             keChinese:temp.ke.chinese,
                             keSpecies:temp.ke.species,
                             keLevel:temp.ke.level,
-                            aoId:aoItem.id,
-                            aoTitle:aoItem.title,
-                            aoChinese:aoItem.chinese,
-                            aoSpecies:aoItem.species,
-                            aoOrgan:aoItem.organ,
-                            aoCancer:aoItem.cancer,
-                            aoLevel:aoItem.level,
-                            aoSpan:tempSize,
-                            count:count
+                            aoId:aoItem.event.id,
+                            aoTitle:aoItem.event.title,
+                            aoChinese:aoItem.event.chinese,
+                            aoSpecies:aoItem.event.species,
+                            aoOrgan:aoItem.event.organ,
+                            aoCancer:aoItem.event.cancer,
+                            aoLevel:aoItem.event.level,
+                            distance:aoItem.distance,
+                            aoSpan:tempSize
                         }
                     ]
                     return arr
@@ -79,7 +80,7 @@ class SingleForcast extends React.Component<any,any> {
                         title: 'ID',
                         dataIndex: 'keId',
                         render: (value, row) => {
-                            
+
                             return {
                                 children: value,
                                 props: {rowSpan:row.aoSpan},
@@ -161,32 +162,47 @@ class SingleForcast extends React.Component<any,any> {
                         title: '等级',
                         dataIndex: 'aoLevel',
                     },
+                    {
+                        title: '距离',
+                        dataIndex: 'distance',
+                    },
                 ]
             },
 
         ]
-        let dataSource = this.state.tableData
 
+        let dataSource = this.state.tableData
         return (
             <Table
                 dataSource={dataSource}
                 loading={this.state.loading}
                 columns={columns}
                 bordered
-                onRow={record => {
-                    return {
-                        onClick: this.handleClickRow, // 点击行
-                    };
-                }}
             />
         )
     }
 
-
+    renderKeInfo = () => {
+        var query = this.props.location.query;
+        const bioassay = query.bioassay;
+        const effect=query.effect;
+        return( <div className="keInfoCon">
+            <h3 style={{ marginBottom: '18px' }}>Ke信息</h3>
+            <div className="item">
+                    <div className="attrLabel">Bioaasay:</div>
+                    <div className="attrValue">{bioassay}</div>
+            </div>
+            <div className="item">
+                <div className="attrLabel">Effect:</div>
+                <div className="attrValue">{effect}</div>
+            </div>
+        </div>)
+    }
 
     render() {
 
         return (<div className="container">
+                {this.renderKeInfo()}
                 <div className="dataContent">
                     {this.renderTableData()}
                 </div>
