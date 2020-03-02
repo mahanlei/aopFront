@@ -20,6 +20,7 @@ import KeAoInfo from "./KeAoInfo";
 import {EnvironmentPlugin} from "webpack";
 import Environment from "./Environment";
 import AopList from "./AopList";
+import AopChemicalInfo from "./AopChemicalInfo";
 const { SubMenu } = Menu
 @withRouter
 
@@ -73,6 +74,7 @@ class App extends React.Component {
             <Route path="/keao" component={KeAoInfo} />
             <Route path="/environment" component={Environment} />
             <Route path="/aopList/:aoId" component={AopList} />
+            <Route path="/aopChemicalInfo" component={AopChemicalInfo} />
           </Switch>
         </div>
       </div>

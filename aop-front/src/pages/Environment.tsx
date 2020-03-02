@@ -16,6 +16,7 @@ class SingleForcast extends React.Component<any,any> {
         }
 
     }
+
     renderSearchForm() {
         const { getFieldDecorator } = this.props.form
         return (
