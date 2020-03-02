@@ -129,7 +129,7 @@ class AopInfo extends React.Component<any, any> {
                     return x.data.title;
                 }
             },
-            legend: { data: ['MIE', 'KE', 'AO'] }
+            legend: { data: ['MIE', 'KE', 'AO'] },
             animationDurationUpdate: 1500,
             animationEasingUpdate: 'quinticInOut',
             series: [

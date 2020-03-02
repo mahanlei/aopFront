@@ -27,10 +27,22 @@ const { SubMenu } = Menu
 class App extends React.Component {
   constructor(props: any) {
     super(props)
-    this.state = {}
+    this.state = {
+      current: 'singleForcast',
+    }
   }
-
+componentDidUpdate(prevProps, prevState){
+  if(this.props.location.pathname !== prevProps.location.pathname){
+    console.log('ddd',this.props.location.pathname.split('/')[1])
+    this.setState({
+      current: this.props.location.pathname.split('/')[1] || 'singleForcast',
+    })
+  }
+}
   handleClick = (e) => {
+    this.setState({
+      current: e.keyPath[0],
+    })
     this.props.history.push({ pathname: `/${e.keyPath[0]}` })
   }
   render() {
@@ -43,6 +55,7 @@ class App extends React.Component {
           theme="dark"
           mode="horizontal"
           style={{ paddingLeft: '10%', height: 60, fontSize: 18, lineHeight: '60px' }}
+          selectedKeys={[this.state.current]}
         >
           <SubMenu title={<div style={{display: 'flex', top: -10}}>
             <Icon type="search" id="searchIcon"/>
@@ -63,10 +76,9 @@ class App extends React.Component {
             renders the first one that matches the current URL. */}
         <div style={{ backgroundColor: 'rgb(244,245,246)',height:'100vh', overflow:'scroll' }} >
           <Switch>
-            {/* <Route path="/"  component={Dashboard}/> */}
-            {/* <IndexRoute component={Search}/> */}
+            <Route path="/" component={SingleForcast} exact />
             <Route path="/edges" component={EdgeSearch} />
-            <Route path="/events" component={Search} />
+            <Route path="/events" exact component={Search} />
             <Route path="/aops" component={Search} />
             <Route path="/event/:eventId" component={EventInfo} />
             <Route path="/aop/:aopId" component={AopInfo} />
