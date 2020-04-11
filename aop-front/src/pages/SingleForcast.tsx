@@ -12,7 +12,6 @@ class SingleForcast extends React.Component<any,any> {
         super(props)
         this.tryRestoreComponent();
         this.itemsChanged = false;  // 本次渲染是否发生了文章列表变化，决定iscroll的refresh调用
-        this.isTouching = false; // 是否在触屏中
         // this.state = {
         //     loading: false,
         //     tableData: [],
@@ -30,16 +29,20 @@ class SingleForcast extends React.Component<any,any> {
                 isloading: false,
                 loading:false,// 是否处于首屏加载中
             };
-            this.page = data.page;
         } else {
             this.state = {
                 tableData: [],          // 文章列表
                 isloading: true,
                 loading:false,// 是否处于首屏加载中
             };
-            this.page = 1;  // 当前翻页
         }
     }
+
+    componentDidMount() {
+        console.log(this.props.lisçt);
+        // this.props.list.data && this.props.list.data.length <= 0 && this.props.getList.call(this);
+      }
+
     componentWillUnmount() {
         // 备份当前的页面状态
         if (!this.state.loading) {
@@ -86,7 +89,7 @@ class SingleForcast extends React.Component<any,any> {
                 dataIndex: 'effect',
             },
             {
-                title: 'AC50',
+                title: 'AC50(μM)',
                 dataIndex: 'ac50',
                 sorter: (a, b) => a.ac50 - b.ac50,
             },
@@ -106,11 +109,7 @@ class SingleForcast extends React.Component<any,any> {
     }
 
     handleClickRow = (record) => {
-        var param = { bioassay: record.bioassay, effect: record.effect};
-        var path = {
-            pathname: "/keao",
-            query: param
-        };
+        var path="/keao/"+encodeURI(encodeURI(record.bioassay))+"/"+record.effect;
         this.props.history.push(path);
 
     }

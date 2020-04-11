@@ -18,9 +18,8 @@ class SingleForcast extends React.Component<any,any> {
         }
     }
     componentDidMount() {
-        var query = this.props.location.query;
-        const bioassay = query.bioassay;
-        const effect=query.effect;
+       const bioassay = window.location.hash.split('/')[2]
+        const effect=window.location.hash.split('/')[3]
         //   this.props.history.location.p
         this.setState({
             loading: true
@@ -184,9 +183,8 @@ class SingleForcast extends React.Component<any,any> {
     }
 
     downloadFile = () => {
-        var query = this.props.location.query;
-        const bioassay = query.bioassay;
-        const effect = query.effect;
+        const bioassay =decodeURI(window.location.hash.split('/')[2]); 
+        const effect=window.location.hash.split('/')[3]
         var filename = bioassay+"-"+effect+".xlsx";
         var filepath = `${serverIP}/result/`+filename;
         document.getElementById("export").setAttribute("href",filepath)
@@ -194,9 +192,8 @@ class SingleForcast extends React.Component<any,any> {
         document.getElementById("export").click();
     }
     renderKeInfo = () => {
-        var query = this.props.location.query;
-        const bioassay = query.bioassay;
-        const effect=query.effect;
+        const bioassay =decodeURI(window.location.hash.split('/')[2]); 
+        const effect=window.location.hash.split('/')[3]
         return( <div className="keInfoCon">
             <h3 style={{ marginBottom: '18px' }}>Ke信息</h3>
             <div className="item">

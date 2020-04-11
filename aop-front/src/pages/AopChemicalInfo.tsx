@@ -26,6 +26,7 @@ class SingleForcast extends React.Component<any,any> {
 
 
         fetchDiagnoseResult(selectedRows).then(res => {
+            console.log(res);
             let arr = [];
             let count=0;
             const tableSize=10;
@@ -38,12 +39,19 @@ class SingleForcast extends React.Component<any,any> {
                         if(tempSize===0&&count%tableSize===1&&count>tableSize){
                             tempSize=len-index;
                         }
+                        let chinaOrNot;
+                        switch(temp.beInChina){
+                            case "0":chinaOrNot='无';break;
+                            case "1":chinaOrNot='有';break;
+                            case "2":chinaOrNot='优控化学品';break;
+                        }
                         arr = [
                             ...arr,
                             {
                                 aopId:key,
                                 cas:temp.cas,
                                 name:temp.name,
+                                beInChina:chinaOrNot,
                                 span:tempSize
                             }
                         ]
@@ -92,6 +100,10 @@ class SingleForcast extends React.Component<any,any> {
                     {
                         title: '英文名',
                         dataIndex: 'name',
+                    },
+                    {
+                        title: '我国有无',
+                        dataIndex: 'beInChina',
                     },
                 ]
             },

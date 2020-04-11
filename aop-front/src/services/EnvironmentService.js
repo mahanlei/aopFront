@@ -1,15 +1,16 @@
 import { serverIP } from "../utils/GlobalConstants"
 
-export function fetchAoInfo(queryName) {
-    return fetch(`${serverIP}/api/events/findAOsByQueryName?queryName=${queryName}`, {
-        method: 'GET',
+export function fetchAoInfo(params) {
+    return fetch(`${serverIP}/api/events/search/findAOsByExample?size=${2000}`, {
+        method: 'POST',
         mode: "cors",
         headers: new Headers({
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
         }),
-    }).then(res => res.json()).then((json) => {
-        return json
+        body: JSON.stringify(params),
+    }).then((res) => {
+        return res.json()
     }).catch((err) => {
         return err
     })

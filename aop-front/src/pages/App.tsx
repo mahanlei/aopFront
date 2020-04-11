@@ -83,7 +83,7 @@ componentDidUpdate(prevProps, prevState){
             <Route path="/event/:eventId" component={EventInfo} />
             <Route path="/aop/:aopId" component={AopInfo} />
             <Route path="/singleForcast" component={SingleForcast} />
-            <Route path="/keao" component={KeAoInfo} />
+            <Route path="/keao/:bioassay/:effect" component={KeAoInfo} />
             <Route path="/environment" component={Environment} />
             <Route path="/aopList/:aoId" component={AopList} />
             <Route path="/aopChemicalInfo" component={AopChemicalInfo} />

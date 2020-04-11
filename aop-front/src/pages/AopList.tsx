@@ -24,7 +24,9 @@ class SingleForcast extends React.Component<any,any> {
         this.setState({
             loading: true
         })
+
         fetchAopList(id).then(res => {
+            console.log(res)
             this.setState({
                 loading: false,
                 tableData: res,
@@ -54,23 +56,95 @@ class SingleForcast extends React.Component<any,any> {
             {
                 title: '物种',
                 dataIndex: 'species',
+                filters: [
+                    { text: '无特异性', value: '无特异性' },
+                    { text: '哺乳', value: '哺乳' },
+                    { text: '两栖', value: '两栖' },
+                    { text: '鱼类', value: '鱼类' },
+                    { text: '鸟类', value: '鸟类' },
+                    { text: '昆虫', value: '昆虫' },
+                    { text: '尾感器', value: '尾感器' },
+                    { text: '甲壳', value: '甲壳' },
+                    { text: '单子叶植物', value: '单子叶植物' },
+                    { text: '双甲', value: '双甲' },
+                  ],
+                onFilter: (value, record) => record.species.indexOf(value) === 0,
 
             },
             {
                 title: '性别',
                 dataIndex: 'sex',
+                filters: [
+                    { text: '无特异性', value: '无特异性' },
+                    { text: '雄性', value: '雄性' },
+                    { text: '雌性', value: '雌性' },
+                  ],
+                onFilter: (value, record) => record.sex.indexOf(value) === 0,
 
             },
             {
+              
                 title: '生命阶段',
                 dataIndex: 'lifeCycle',
+                filters: [
+                    { text: '全生命阶段', value: '全生命阶段' },
+                    { text: '胚胎', value: '胚胎' },
+                    { text: '胎儿', value: '胎儿' },
+                    { text: '幼体', value: '幼体' },
+                    { text: '身体发育阶段', value: '身体发育阶段' },
+                    { text: '成体', value: '成体' },
+            
+                  ],
+                onFilter: (value, record) => record.lifeCycle.indexOf(value) === 0,
+
+            },
+            {
+               
+
+                title: '器官',
+                dataIndex:'organ',
+                filters: [
+                    { text: '运动系统', value: '运动系统' },
+                    { text: '消化系统', value: '消化系统' },
+                    { text: '呼吸系统', value: '呼吸系统' },
+                    { text: '泌尿系统', value: '泌尿系统' },
+                    { text: '生殖系统', value: '生殖系统' },
+                    { text: '内分泌系统', value: '内分泌系统' },
+                    { text: '免疫系统', value: '免疫系统' },
+                    { text: '神经系统', value: '神经系统' },
+                    { text: '循环系统', value: '循环系统' },
+                    { text: '其他', value: '其他' },
+                  ],
+                onFilter: (value, record) => record.organ.indexOf(value) === 0,
+
+            },
+            {
+               
+                title: '癌症',
+                dataIndex:'cancer',
+                filters: [
+                    { text: '阴性', value: '阴性' },
+                    { text: '阳性', value: '阳性' },
+                    
+                  ],
+                onFilter: (value, record) => record.cancer.indexOf(value) === 0,
 
             },
             {
                 title: '等级',
-                dataInd:'level',
-
+                dataIndex:'level',
+                filters: [
+                    { text: '分子', value: '分子' },
+                    { text: '细胞', value: '细胞' },
+                    { text: '组织', value: '组织' },
+                    { text: '器官', value: '器官' },
+                    { text: '个体', value: '个体' },
+                    { text: '种群', value: '种群' },
+                
+                  ],
+                onFilter: (value, record) => record.level.indexOf(value) === 0,
             },
+            
 
         ]
 

@@ -5,8 +5,18 @@ import { fetchAopInfo, fetchAopNodes } from '../services/AopService'
 import { keColumns } from '../pages/search/Search'
 import './AopInfo.less'
 import {fetchAoInfo} from '../services/EnvironmentService'
-// import echarts from 'echarts'
+import {renderKESearch} from './search/Search.tsx'
+
 const { Option, OptGroup } = Select
+const speciesTypes=['无特异性', '哺乳', '两栖', '鱼', 
+'鸟', '昆虫', '尾感器', '甲壳', '单子叶植物', '双甲']
+const sexTypes=['无特异性', '雄性', '雌性']
+const lifeCycleTypes=['全生命阶段', '胚胎', '胎儿', '幼体','身体发育阶段','成体']
+const organTypes=['运动系统', '消化系统','呼吸系统','泌尿系统','生殖系统','内分泌系统',
+  '免疫系统','神经系统','循环系统','其他']
+const cancerTypes=['致癌', '非致癌']
+const survivalRatesTypes = ['降低']
+const  levelTypes = ['分子', '细胞','组织','器官','个体','种群']
 class SingleForcast extends React.Component<any,any> {
     constructor(props) {
         super(props)
@@ -17,24 +27,161 @@ class SingleForcast extends React.Component<any,any> {
 
     }
 
-    renderSearchForm() {
+    // renderSearchForm() {
+    //     const { getFieldDecorator } = this.props.form
+    //     return (
+    //         <React.Fragment>
+    //             <Row gutter={16}>
+    //                 <Col span={8}>
+    //                     <Form.Item label={'名称'} className='line'>
+    //                         {getFieldDecorator('name', {
+    //                             rules: [],
+    //                         })(
+    //                             <Input placeholder="输入id、中文名称或者英文名称" style={{ width: 300 }} />
+    //                         )}
+    //                     </Form.Item>
+    //                 </Col>
+    //             </Row>
+    //         </React.Fragment>
+    //     )
+    // }
+
+    renderSearch() {
         const { getFieldDecorator } = this.props.form
-        return (
-            <React.Fragment>
-                <Row gutter={16}>
-                    <Col span={8}>
-                        <Form.Item label={'名称'} className='line'>
-                            {getFieldDecorator('name', {
-                                rules: [],
-                            })(
-                                <Input placeholder="输入id、中文名称或者英文名称" style={{ width: 300 }} />
-                            )}
-                        </Form.Item>
-                    </Col>
-                </Row>
-            </React.Fragment>
-        )
-    }
+        const speciesOptions = []
+        for (let i= 0;i<speciesTypes.length;i++){
+          speciesOptions.push(<Option key={speciesTypes[i]}>{speciesTypes[i]}</Option>)
+        }
+        const sexOptions = []
+        for (let i= 0;i<sexTypes.length;i++){
+          sexOptions.push(<Option key={sexTypes[i]}>{sexTypes[i]}</Option>)
+        }
+        const lifeCycleOptions = []
+        for (let i= 0;i<lifeCycleTypes.length;i++){
+          lifeCycleOptions.push(<Option key={lifeCycleTypes[i]}>{lifeCycleTypes[i]}</Option>)
+        }
+        const organOptions = []
+        for (let i= 0;i<organTypes.length;i++){
+          organOptions.push(<Option key={organTypes[i]}>{organTypes[i]}</Option>)
+        }
+        const cancerOptions = []
+        for (let i= 0;i<cancerTypes.length;i++){
+          cancerOptions.push(<Option key={cancerTypes[i]}>{cancerTypes[i]}</Option>)
+        }
+        const survivalRatesOptions = []
+        for (let i= 0;i<survivalRatesTypes.length;i++){
+          survivalRatesOptions.push(<Option key={survivalRatesTypes[i]}>{survivalRatesTypes[i]}</Option>)
+        }
+        const levelOptions = []
+        for (let i= 0;i<levelTypes.length;i++){
+          levelOptions.push(<Option key={levelTypes[i]}>{levelTypes[i]}</Option>)
+        }
+    
+        return <React.Fragment>
+          <Row gutter={16}>
+            <Col span={8}>
+              <Form.Item label={'名称'} className='line'>
+                {getFieldDecorator('name', {
+                  rules: [],
+                })(
+                  <Input placeholder="输入英文名称" style={{ width: 230 }} />
+                )}
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item label={'中文名'} className='line'>
+                {getFieldDecorator('chinese', {
+                  rules: [],
+                })(
+                  <Input placeholder="输入中文名称" style={{ width: 230 }} />
+                )}
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item label={'物种'} className='line'>
+                {getFieldDecorator('species', {
+                  rules: [],
+                })(
+                  <Select  allowClear style={{ width: 230 }} >
+                  {speciesOptions}
+                  </Select>
+                )}
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={8}>
+              <Form.Item label={'性别'} className='line'>
+                {getFieldDecorator('sex', {
+                  rules: [],
+                })(
+                  <Select allowClear style={{ width: 230 }} >
+                  {sexOptions}
+                  </Select>
+                )}
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item label={'生命阶段'} className='line'>
+                {getFieldDecorator('lifeCycle', {
+                  rules: [],
+                })(
+                  <Select allowClear style={{ width: 230 }} >
+                  {lifeCycleOptions}
+                  </Select>
+                )}
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item label={'器官'} className='line'>
+                {getFieldDecorator('organ', {
+                  rules: [],
+                })(
+                  <Select allowClear style={{ width: 230 }} >
+                  {organOptions}
+                  </Select>
+                )}
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={8}>
+              <Form.Item label={'癌症'} className='line'>
+                {getFieldDecorator('cancer', {
+                  rules: [],
+                })(
+                  <Select allowClear style={{ width: 230 }} >
+                  {cancerOptions}
+                  </Select>
+                )}
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item label={'存活率'} className='line'>
+                {getFieldDecorator('survivalRates', {
+                  rules: [],
+                })(
+                  <Select allowClear style={{ width: 230 }} >
+                  {survivalRatesOptions}
+                  </Select>
+                )}
+              </Form.Item>
+            </Col>
+            <Col span={8}>
+              <Form.Item label={'生物水平'} className='line'>
+                {getFieldDecorator('level', {
+                  rules: [],
+                })(
+                  <Select allowClear style={{ width: 230 }} >
+                  {levelOptions}
+                  </Select>
+                )}
+              </Form.Item>
+            </Col>
+          </Row>
+          {/* {this.renderCheckTypes()} */}
+        </React.Fragment>
+      }
     renderTableData() {
         const columns = [
 
@@ -98,8 +245,17 @@ class SingleForcast extends React.Component<any,any> {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (err) { return }
+            let items = {...values}
+            let key1 = 'title'
+            let value1 = values.name
+            items[key1] = value1
+            let key2 = 'chinese'
+            let value2 = values.chineseName
+            items[key2] = value2
             this.setState({ loading: true })
-            fetchAoInfo(values.name).then(res => {
+            console.log(items);
+            fetchAoInfo(items).then(res => {
+                console.log(res);
                 this.setState({
                     loading: false,
                     tableData: res,
@@ -117,7 +273,7 @@ class SingleForcast extends React.Component<any,any> {
                 <div className="search">
                     <Form className='ant-advanced-search-form' >
                         <h3 style={{ marginBottom: '18px' }}>AO搜索</h3>
-                        {this.renderSearchForm()}
+                        {this.renderSearch()}
                     </Form>
                     <div style={{ textAlign: 'right' }}>
                         <Button type="primary" onClick={this.handleSearch}>查询</Button>
