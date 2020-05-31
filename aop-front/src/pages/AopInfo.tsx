@@ -16,9 +16,9 @@ class AopInfo extends React.Component<any, any> {
                 '物种': '',
                 '性别': '',
                 '生命阶段': '',
-                '器官': '',
-                '癌症': '',
-                '存活率': '',
+                '器官/毒性类型': '',
+                '致癌/遗传毒性': '',
+                // '存活率': '',
                 '生物水平': '',
             },
             nodeLinks: [],
@@ -84,7 +84,7 @@ class AopInfo extends React.Component<any, any> {
                 this.setState({
                     nodeLinks: linkTemp,
                     nodes: nodeTemp,
-                }, () => { console.log('nodes', this.state.nodes, this.state.nodeLinks); this.getChartOption() })
+                }, () => { this.getChartOption() })
             })
         })
 

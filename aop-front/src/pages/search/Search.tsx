@@ -61,10 +61,11 @@ export const keColumns = [
 const speciesTypes=['人类', '啮齿', '其他哺乳纲', '鱼类', 
  '昆虫','两栖','鸟类','植物', '其他']
 const sexTypes=['无特异性', '雄性', '雌性']
-const lifeCycleTypes=[ '胚胎及幼儿', '青春期','成体','全生命阶段','无特异性']
+const lifeCycleTypes=['胚胎及幼儿', '青春期','成体', '全生命阶段', '无特异性']
 const organTypes=['运动系统', '消化系统','呼吸系统','泌尿系统','生殖系统','内分泌系统',
-  '免疫系统','神经系统','循环系统','其他','急性毒性']
+  '免疫系统','神经系统','循环系统','急性毒性','其他']
 const cancerTypes=['阳性', '阴性']
+const survivalRatesTypes = ['降低']
 const  levelTypes = ['分子', '细胞','组织','器官','个体','种群']
 
 class Search extends React.Component {
@@ -341,7 +342,7 @@ this.props.history.push(`/event/${record.id}`)
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item label={'器官'} className='line'>
+          <Form.Item label={'器官/毒性类型'} className='line'>
             {getFieldDecorator('organ', {
               rules: [],
             })(
@@ -354,7 +355,7 @@ this.props.history.push(`/event/${record.id}`)
       </Row>
       <Row gutter={16}>
         <Col span={8}>
-          <Form.Item label={'癌症'} className='line'>
+          <Form.Item label={'致癌/遗传毒性'} className='line'>
             {getFieldDecorator('cancer', {
               rules: [],
             })(

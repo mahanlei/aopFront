@@ -1,12 +1,8 @@
 import React from 'react'
-import { Input, Select, Row, Col, Icon, Form, Button, Table } from 'antd'
-import { ke_attr } from '../utils/ChAndEn.js'
-import { fetchAopInfo, fetchAopNodes } from '../services/AopService'
-import { keColumns } from '../pages/search/Search'
+import { Input, Row, Col, Form, Button, Table } from 'antd'
 import './AopInfo.less'
 import {fetchToxInfo} from '../services/SingleForcast'
 // import echarts from 'echarts'
-const { Option, OptGroup } = Select
 class SingleForcast extends React.Component<any,any> {
     constructor(props) {
         super(props)
@@ -39,7 +35,6 @@ class SingleForcast extends React.Component<any,any> {
     }
 
     componentDidMount() {
-        console.log(this.props.lisçt);
         // this.props.list.data && this.props.list.data.length <= 0 && this.props.getList.call(this);
       }
 
@@ -48,7 +43,6 @@ class SingleForcast extends React.Component<any,any> {
         if (!this.state.loading) {
             let data = {
                 tableData: this.state.tableData,
-                page: this.page,
             };
             window.sessionStorage.setItem(this.props.location.key, JSON.stringify(data));
         } else {

@@ -1,15 +1,10 @@
 import React from 'react'
-import { Input, Select, Row, Col, Icon, Form, Button, Table } from 'antd'
-import { ke_attr } from '../utils/ChAndEn.js'
-import { fetchAopInfo, fetchAopNodes } from '../services/AopService'
-import { keColumns } from '../pages/search/Search'
+import { Form, Button, Table } from 'antd'
 import { serverIP } from "../utils/GlobalConstants"
 import './AopInfo.less'
 import './KeAoInfo.less'
-import {fetchAopList,fetchDiagnoseResult} from '../services/EnvironmentService'
-// import echarts from 'echarts'
-const { Option, OptGroup } = Select
-class SingleForcast extends React.Component<any,any> {
+import {fetchDiagnoseResult} from '../services/EnvironmentService'
+class AopChemicalInfo extends React.Component<any,any> {
     constructor(props) {
         super(props)
         this.state = {
@@ -26,7 +21,6 @@ class SingleForcast extends React.Component<any,any> {
 
 
         fetchDiagnoseResult(selectedRows).then(res => {
-            console.log(res);
             let arr = [];
             let count=0;
             const tableSize=10;
@@ -148,4 +142,4 @@ class SingleForcast extends React.Component<any,any> {
         )
     }
 }
-export default Form.create()(SingleForcast)
+export default Form.create()(AopChemicalInfo)

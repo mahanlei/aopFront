@@ -33,7 +33,6 @@ class App extends React.Component {
   }
 componentDidUpdate(prevProps, prevState){
   if(this.props.location.pathname !== prevProps.location.pathname){
-    console.log('ddd',this.props.location.pathname.split('/')[1])
     this.setState({
       current: this.props.location.pathname.split('/')[1] || 'singleForcast',
     })

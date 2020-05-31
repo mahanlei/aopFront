@@ -16,7 +16,7 @@ const organTypes=['运动系统', '消化系统','呼吸系统','泌尿系统','
   '免疫系统','神经系统','循环系统','其他','急性毒性']
 const cancerTypes=['阳性', '阴性']
 const  levelTypes = ['分子', '细胞','组织','器官','个体','种群']
-class SingleForcast extends React.Component<any,any> {
+class Environment extends React.Component<any,any> {
     constructor(props) {
         super(props)
         this.state = {
@@ -129,7 +129,7 @@ class SingleForcast extends React.Component<any,any> {
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label={'器官'} className='line'>
+              <Form.Item label={'器官/毒性类型'} className='line'>
                 {getFieldDecorator('organ', {
                   rules: [],
                 })(
@@ -142,7 +142,7 @@ class SingleForcast extends React.Component<any,any> {
           </Row>
           <Row gutter={16}>
             <Col span={8}>
-              <Form.Item label={'癌症'} className='line'>
+              <Form.Item label={'致癌/遗传毒性'} className='line'>
                 {getFieldDecorator('cancer', {
                   rules: [],
                 })(
@@ -239,9 +239,7 @@ class SingleForcast extends React.Component<any,any> {
             let value2 = values.chineseName
             items[key2] = value2
             this.setState({ loading: true })
-            console.log(items);
             fetchAoInfo(items).then(res => {
-                console.log(res);
                 this.setState({
                     loading: false,
                     tableData: res,
@@ -278,4 +276,4 @@ class SingleForcast extends React.Component<any,any> {
         )
     }
 }
-export default Form.create()(SingleForcast)
+export default Form.create()(Environment)
