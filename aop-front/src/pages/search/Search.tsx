@@ -40,18 +40,13 @@ export const keColumns = [
         width: 160,
       },
       {
-        title: '器官',
+        title: '器官/毒性类型',
         dataIndex: 'organ',
         width: 90,
       },
       {
-        title: '癌症',
+        title: '致癌/遗传毒性',
         dataIndex: 'cancer',
-        width: 80,
-      },
-      {
-        title: '存活率',
-        dataIndex: 'survivalRates',
         width: 80,
       },
       {
@@ -63,14 +58,13 @@ export const keColumns = [
     ]
   },
 ];
-const speciesTypes=['无特异性', '哺乳', '两栖', '鱼', 
-'鸟', '昆虫', '尾感器', '甲壳', '单子叶植物', '双甲']
+const speciesTypes=['人类', '啮齿', '其他哺乳纲', '鱼类', 
+ '昆虫','两栖','鸟类','植物', '其他']
 const sexTypes=['无特异性', '雄性', '雌性']
-const lifeCycleTypes=['全生命阶段', '胚胎', '胎儿', '幼体','身体发育阶段','成体']
+const lifeCycleTypes=[ '胚胎及胎儿', '青春体','成体','全生命阶段','无特异性']
 const organTypes=['运动系统', '消化系统','呼吸系统','泌尿系统','生殖系统','内分泌系统',
-  '免疫系统','神经系统','循环系统','其他']
-const cancerTypes=['致癌', '非致癌']
-const survivalRatesTypes = ['降低']
+  '免疫系统','神经系统','循环系统','其他','急性毒性']
+const cancerTypes=['阳性', '阴性']
 const  levelTypes = ['分子', '细胞','组织','器官','个体','种群']
 
 class Search extends React.Component {
@@ -282,10 +276,10 @@ this.props.history.push(`/event/${record.id}`)
     for (let i= 0;i<cancerTypes.length;i++){
       cancerOptions.push(<Option key={cancerTypes[i]}>{cancerTypes[i]}</Option>)
     }
-    const survivalRatesOptions = []
-    for (let i= 0;i<survivalRatesTypes.length;i++){
-      survivalRatesOptions.push(<Option key={survivalRatesTypes[i]}>{survivalRatesTypes[i]}</Option>)
-    }
+    // const survivalRatesOptions = []
+    // for (let i= 0;i<survivalRatesTypes.length;i++){
+    //   survivalRatesOptions.push(<Option key={survivalRatesTypes[i]}>{survivalRatesTypes[i]}</Option>)
+    // }
     const levelOptions = []
     for (let i= 0;i<levelTypes.length;i++){
       levelOptions.push(<Option key={levelTypes[i]}>{levelTypes[i]}</Option>)
@@ -370,7 +364,7 @@ this.props.history.push(`/event/${record.id}`)
             )}
           </Form.Item>
         </Col>
-        <Col span={8}>
+        {/* <Col span={8}>
           <Form.Item label={'存活率'} className='line'>
             {getFieldDecorator('survivalRates', {
               rules: [],
@@ -380,7 +374,7 @@ this.props.history.push(`/event/${record.id}`)
               </Select>
             )}
           </Form.Item>
-        </Col>
+        </Col> */}
         <Col span={8}>
           <Form.Item label={'生物水平'} className='line'>
             {getFieldDecorator('level', {

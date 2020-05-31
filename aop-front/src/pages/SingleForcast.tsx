@@ -81,7 +81,7 @@ class SingleForcast extends React.Component<any,any> {
                 dataIndex: 'id',
             },
             {
-                title: 'Bioassay',
+                title: '检测类型/对象',
                 dataIndex: 'bioassay',
             },
             {

@@ -197,7 +197,7 @@ class SingleForcast extends React.Component<any,any> {
         return( <div className="keInfoCon">
             <h3 style={{ marginBottom: '18px' }}>Ke信息</h3>
             <div className="item">
-                    <div className="attrLabel">Bioaasay:</div>
+                    <div className="attrLabel">bioassay:</div>
                     <div className="attrValue">{bioassay}</div>
             </div>
             <div className="item">
