@@ -61,7 +61,7 @@ export const keColumns = [
 const speciesTypes=['人类', '啮齿', '其他哺乳纲', '鱼类', 
  '昆虫','两栖','鸟类','植物', '其他']
 const sexTypes=['无特异性', '雄性', '雌性']
-const lifeCycleTypes=[ '胚胎及胎儿', '青春体','成体','全生命阶段','无特异性']
+const lifeCycleTypes=[ '胚胎及胎儿', '青春期','成体','全生命阶段','无特异性']
 const organTypes=['运动系统', '消化系统','呼吸系统','泌尿系统','生殖系统','内分泌系统',
   '免疫系统','神经系统','循环系统','其他','急性毒性']
 const cancerTypes=['阳性', '阴性']
