@@ -299,7 +299,7 @@ this.props.history.push(`/event/${record.id}`)
         </Col>
         <Col span={8}>
           <Form.Item label={'中文名'} className='line'>
-            {getFieldDecorator('chineseName', {
+            {getFieldDecorator('chinese', {
               rules: [],
             })(
               <Input placeholder="输入中文名称" style={{ width: 230 }} />
