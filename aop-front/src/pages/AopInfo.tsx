@@ -49,7 +49,7 @@ class AopInfo extends React.Component<any, any> {
         fetchAopNodes(eid).then(res => {
             res.map((item, k) => {
                 let nodeSymbol = this.getNodeSymbol(item, k)
-                let node = { name: nodeSymbol.name, title: item.name, symbol: nodeSymbol.type, itemStyle: nodeSymbol.itemStyle }
+                let node = { name: nodeSymbol.name, title: item.name, symbol: nodeSymbol.type, category: nodeSymbol.category, itemStyle: nodeSymbol.itemStyle }
                 nodeTemp.push(node)
                 this.setState({
                     nodes: nodeTemp,
@@ -76,6 +76,7 @@ class AopInfo extends React.Component<any, any> {
                     //     let node = {name: `KE:${item.sourceId}`,x: xp, y:'300',value: item.sourceId}
                     //     nodeTemp.push(node)
                     // }
+                    //TODO 节点的中文名
                     let sourceNode = nodeTemp.find(v => v.name.split(':')[1] == item1.sourceId)
                     let targetNode = nodeTemp.find(v => v.name.split(':')[1] == item1.targetId)
                     let link = { source: `${sourceNode.name}`, target: `${targetNode.name}` }
@@ -95,10 +96,11 @@ class AopInfo extends React.Component<any, any> {
             case 'MolecularInitiatingEvent':
                 return {
                     name: `MIE: ${item.eventId}`,
-                    type: 'reat',
+                    type: 'roundRect',
                     itemStyle: {
-                        color: 'rgb(249,215,73)'
-                    }
+                        color: 'rgb(249,215,73)',
+                    },
+                    category: 'MIE',
                 }
             case 'KeyEvent':
                 return {
@@ -106,7 +108,8 @@ class AopInfo extends React.Component<any, any> {
                     type: 'circle',
                     itemStyle: {
                         color: 'rgb(55,131,148)'
-                    }
+                    },
+                    category: 'KE',
                 }
             case 'AdverseOutcome':
                 return {
@@ -114,22 +117,50 @@ class AopInfo extends React.Component<any, any> {
                     type: 'triangle',
                     itemStyle: {
                         color: 'rgb(239,109,76)'
-                    }
+                    },
+                    category: 'AO',
                 }
         }
     }
     getChartOption = () => {
+        const { info } = this.state
         var myChart = echarts.init(document.getElementById('graphPanel'))
+        const categorys = [
+            {
+                name: 'MIE',
+                icon: 'roundRect',
+                itemStyle: {
+                    color: 'rgb(249,215,73)',
+                },
+            },
+            {
+                name: 'KE',
+                icon: 'circle',
+                itemStyle: {
+                    color: 'rgb(55,131,148)'
+                },
+            }, {
+                name: 'AO',
+                icon: 'triangle',
+                itemStyle: {
+                    color: 'rgb(239,109,76)'
+                },
+            }
+        ]
         let option = {
             title: {
-                text: 'AOP链图'
+                text: info['中文名']
             },
             tooltip: {
                 formatter: function (x) {
                     return x.data.title;
                 }
             },
-            legend: { data: ['MIE', 'KE', 'AO'] },
+            legend: [{
+                data: categorys,
+                bottom: 0,
+                right: 0,
+            }],
             animationDurationUpdate: 1500,
             animationEasingUpdate: 'quinticInOut',
             series: [
@@ -138,6 +169,7 @@ class AopInfo extends React.Component<any, any> {
                     layout: 'circular',
                     symbolSize: 50,
                     roam: true,
+                    categories: categorys,
                     label: {
                         normal: {
                             show: true,
