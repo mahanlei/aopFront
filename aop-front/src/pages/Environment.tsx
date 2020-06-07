@@ -25,6 +25,17 @@ class Environment extends React.Component<any,any> {
         }
 
     }
+    componentDidMount() {
+      this.setState({ loading: true })
+      let items={};
+        fetchAoInfo(items).then(res => {
+        this.setState({
+            loading: false,
+            tableData: res,
+        })
+
+    }) //传的参数
+    }
 
     // renderSearchForm() {
     //     const { getFieldDecorator } = this.props.form
