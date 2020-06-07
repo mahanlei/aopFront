@@ -205,7 +205,7 @@ class Environment extends React.Component<any,any> {
 
             },
             {
-                title: '等级',
+                title: '生物水平',
                 dataIndex: 'level',
 
             },
@@ -247,7 +247,7 @@ class Environment extends React.Component<any,any> {
             let value1 = values.name
             items[key1] = value1
             let key2 = 'chinese'
-            let value2 = values.chineseName
+            let value2 = values.chinese
             items[key2] = value2
             this.setState({ loading: true })
             fetchAoInfo(items).then(res => {
