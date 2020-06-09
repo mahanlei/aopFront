@@ -80,7 +80,7 @@ class SingleForcast extends React.Component<any,any> {
 
             {
                 title: 'ID',
-                dataIndex: 'id',
+                dataIndex: 'toxId',
             },
             {
                 title: '化学品名称',
