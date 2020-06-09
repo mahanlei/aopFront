@@ -49,7 +49,7 @@ class AopInfo extends React.Component<any, any> {
         fetchAopNodes(eid).then(res => {
             res.map((item, k) => {
                 let nodeSymbol = this.getNodeSymbol(item, k)
-                let node = { name: nodeSymbol.name, title: item.name, symbol: nodeSymbol.type, category: nodeSymbol.category, itemStyle: nodeSymbol.itemStyle }
+                let node = { name: nodeSymbol.name, title: item.name, chinese: item.chinese, symbol: nodeSymbol.type, category: nodeSymbol.category, itemStyle: nodeSymbol.itemStyle }
                 nodeTemp.push(node)
                 this.setState({
                     nodes: nodeTemp,
@@ -153,7 +153,7 @@ class AopInfo extends React.Component<any, any> {
             },
             tooltip: {
                 formatter: function (x) {
-                    return x.data.title;
+                    return x.data.title + "<br/>"+ x.data.chinese;
                 }
             },
             legend: [{
