@@ -21,7 +21,7 @@ import { EnvironmentPlugin } from "webpack";
 import Environment from "./Environment";
 import AopList from "./AopList";
 import AopChemicalInfo from "./AopChemicalInfo";
-import sccIcon from '../images/scc-icon.jpeg';
+import sccIcon from '../images/scc-icon.png';
 import njuEnvIcon from '../images/nju-env-icon.jpeg';
 const { SubMenu } = Menu
 const { Header, Content, Footer } = Layout;
@@ -72,9 +72,9 @@ class App extends React.Component {
               <Menu.Item key="singleForcast" style={{ height: 60 }}>
                 化学品毒性预测
               </Menu.Item>
-              <Menu.Item key="environment" style={{ height: 60 }}>
+              {/* <Menu.Item key="environment" style={{ height: 60 }}>
                 环境诊断
-              </Menu.Item>
+              </Menu.Item> */}
             </Menu>
           </Header>
           <Content>
@@ -96,7 +96,7 @@ class App extends React.Component {
               </Switch>
             </div>
           </Content>
-          <Footer>
+          <Footer style={{backgroundColor: "#FFF"}}>
             <div style={{ display: "flex" }}>
               <div style={{ marginRight: 105 }}>
                 <img src={sccIcon} width="36px" height="36px" style={{ marginRight: 6 }} />

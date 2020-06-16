@@ -30,7 +30,7 @@ class Dashboard extends React.Component {
 
 render() {
     const WhatIsaAop = () => {
-        return <div>aAOP是基于<a href="https://aopkb.oecd.org/">AOP知识库</a>与<a href="https://tox21.gov/">Tox21</a>化学品的体外生物检测信息，汇编了超过4000种化学品的共800余种的生物检测方法信息，并将这些信息与超过250条AOPs建立联系的AOP应用型网站。</div>
+        return <div>aAOP是基于<a href="https://aopkb.oecd.org/">AOP知识库</a>与<a href="https://tox21.gov/">Tox21</a>化学品的体外生物检测信息，前期我们汇编了101种化学品的共600余种的生物检测方法信息，并将这些信息与超过250条AOPs建立联系的AOP应用型网站。</div>
     }
     const aAOPTodo = () => {
         return <ol>
@@ -61,7 +61,7 @@ render() {
         <div className="opeLine">
             <div className="circle" style={{ backgroundColor: "rgb(220,237,208)" }}><Link to="/aops">AOP信息检索</Link></div>
             <div className="circle" style={{ backgroundColor: "rgb(255,240,193)" }}><Link to="/singleForcast">化学品毒性预测</Link></div>
-            <div className="circle" style={{ backgroundColor: "rgb(215,230,245)" }}><Link to="/environment">环境诊断</Link></div>
+            <div className="circle" style={{ backgroundColor: "rgb(203,203,204)" }}><Link style={{color: "grey"}}>环境诊断</Link></div>
             <div className="circle" style={{ backgroundColor: "rgb(248,223,205)", color: "#1890ff" }} onClick={this.downloadZip}>下载</div>
             {/* TODO 下载事件 */}
         </div>
