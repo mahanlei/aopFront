@@ -3,7 +3,7 @@ import { Form, Button, Table } from 'antd'
 import { serverIP } from "../utils/GlobalConstants"
 import './AopInfo.less'
 import './KeAoInfo.less'
-import {fetchDiagnoseResult} from '../services/EnvironmentService'
+import { fetchDiagnoseResult } from '../services/EnvironmentService'
 class AopChemicalInfo extends React.Component<any,any> {
     constructor(props) {
         super(props)
@@ -13,7 +13,7 @@ class AopChemicalInfo extends React.Component<any,any> {
         }
     }
     componentDidMount() {
-        var query = this.props.location.query;
+        const query = this.props.location.query;
         const selectedRows = query.selectedRows;
         this.setState({
             loading: true
@@ -24,7 +24,7 @@ class AopChemicalInfo extends React.Component<any,any> {
             let arr = [];
             let count=0;
             const tableSize=10;
-            for(var key in res){
+            for(let key in res){
                     const len = res[key].length;
 
                     res[key].map((temp,index)=>{
@@ -116,14 +116,14 @@ class AopChemicalInfo extends React.Component<any,any> {
     }
 
     downloadFile = () => {
-        var query = this.props.location.query;
+        const query = this.props.location.query;
         const selectedRows = query.selectedRows;
-        var name = "";
+        let name = "";
         for(let i=0; i<selectedRows.length; i++) {
             name+=selectedRows[i].id+"_";
         }
-        var filename = name+".xlsx";
-        var filepath = `${serverIP}/result/`+filename;
+        const filename = name+".xlsx";
+        const filepath = `${serverIP}/result/`+filename;
         document.getElementById("export").setAttribute("href",filepath)
         document.getElementById("export").setAttribute("download",filename)
         document.getElementById("export").click();

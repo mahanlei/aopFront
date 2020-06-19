@@ -1,12 +1,10 @@
 import React from "react";
 import {
-  BrowserRouter as Router, IndexRoute,
+  BrowserRouter as Router,
   Switch,
   Route,
   Link,
   withRouter,
-  Redirect
-
 } from "react-router-dom";
 import { Menu, Icon, Layout, Button } from 'antd'
 import Search from './search/Search'

@@ -1,0 +1,4 @@
+{
+    "eslint.alwaysShowStatus": true,
+    "javascript.implicitProjectConfig.experimentalDecorators": true 
+}
