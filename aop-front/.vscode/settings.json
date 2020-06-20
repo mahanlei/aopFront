@@ -1,4 +1,8 @@
 {
     "eslint.alwaysShowStatus": true,
-    "javascript.implicitProjectConfig.experimentalDecorators": true 
+    "javascript.implicitProjectConfig.experimentalDecorators": true,
+    "eslint.codeAction.disableRuleComment": {
+        
+    
+    }
 }
