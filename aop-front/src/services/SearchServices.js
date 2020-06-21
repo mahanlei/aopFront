@@ -1,6 +1,6 @@
 import { serverIP } from "../utils/GlobalConstants"
 export function fetchSearchResult(type, params) {
-    return fetch(`${serverIP}/api/${type}/search/findByExample?size=${2000}`, {
+    return fetch(`${serverIP}/api/${type}/search/findByExample?size=${params.size}&page=${params.page}`, {
         method: 'POST',
         mode: "cors",
         headers: new Headers({
@@ -17,7 +17,7 @@ export function fetchSearchResult(type, params) {
 }
 
 export function fetchKerSearchResult(params) {
-    return fetch(`${serverIP}/api/edges/search/findByExample?size=${2000}`, {
+    return fetch(`${serverIP}/api/edges/search/findByExample?size=${params.size}&page=${params.page}`, {
         method: 'POST',
         mode: "cors",
         headers: new Headers({

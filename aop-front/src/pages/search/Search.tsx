@@ -82,11 +82,9 @@ class Search extends React.Component {
       type: 'events',
       tableData: [],
       loading: false,
-      pagination: {
-        current: 1,
-        pageSize: 10,
-        total: 0,
-      }
+      current: 1,
+      pageSize: 20,
+      total: 0,
     }
   }
   componentDidMount() {
@@ -94,28 +92,35 @@ class Search extends React.Component {
 
   }
   componentDidUpdate(prevProps, prevState) {
+    const { pageSize, current } = this.state;
     if (this.props.location.pathname !== prevProps.location.pathname) {
       this.props.form.resetFields();
-      fetchSearchResult(this.props.location.pathname.split('/')[1], {}).then(res =>
+      fetchSearchResult(this.props.location.pathname.split('/')[1], {size: pageSize, page: 1}).then(res =>
         this.setState({
           tableData: res.content,
-          loading: false
+          loading: false,
+          total: res.totalElements,
+          pageSize: res.size,
+          current: 1,
         })
       )
     }
 
   }
   getCheckTypeoptions = () => {
+    const { pageSize, current } = this.state;
     const path = window.location.hash
     if (path.includes('events')) {
       this.setState({
         checkTypeOptions: Object.keys(ke_attr),
         type: 'events',
       })
-      fetchSearchResult('events', {}).then(res =>
+      fetchSearchResult('events', {size: pageSize, page: current}).then(res =>
         this.setState({
           tableData: res.content,
-          loading: false
+          loading: false,
+          total: res.totalElements,
+          pageSize: res.size,
         })
       )
 
@@ -124,10 +129,12 @@ class Search extends React.Component {
         checkTypeOptions: Object.keys(ke_attr),
         type: 'aops',
       })
-      fetchSearchResult('aops', {}).then(res =>
+      fetchSearchResult('aops', {size: pageSize, page: current}).then(res =>
         this.setState({
           tableData: res.content,
-          loading: false
+          loading: false,
+          total: res.totalElements,
+          pageSize: res.size,
         })
       )
     }
@@ -163,12 +170,13 @@ class Search extends React.Component {
   handleReset = () => {
     this.props.form.resetFields();
   }
-  handleSearch = (e) => {
-    e.preventDefault();
+  handleSearch = (resetPage:true) => {
+    const{ pageSize, current } = this.state;
+    // e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (err) { return }
       // const { checkTypes } = this.state
-      let items = { ...values }
+      let items = { ...values, page: current, size: pageSize }
       // checkTypes.map(v => {
       //   let key = v.get('enName');
       //   items[key] = v.get('value')
@@ -190,8 +198,14 @@ class Search extends React.Component {
       fetchSearchResult(this.state.type, items).then(res =>
         this.setState({
           tableData: res.content,
-          loading: false
+          loading: false,
+          total: res.totalElements,
         }))
+        if(resetPage){
+          this.setState({
+            current: 1,
+          })
+        }
     })
   }
   handleClickRow = (record) => {
@@ -201,6 +215,11 @@ class Search extends React.Component {
     } else {
       this.props.history.push(`/aop/${record.id}`)
     }
+  }
+  changePage = (current) => {
+    this.setState({
+      current: current,
+    },() => this.handleSearch(false))
   }
   // renderCheckTypes = () => {
   //   const { checkTypes } = this.state
@@ -405,14 +424,21 @@ class Search extends React.Component {
       {/* {this.renderCheckTypes()} */}
     </React.Fragment>
   }
+  
   renderTableData() {
-    const { tableData, pagination } = this.state
+    const { tableData, pageSize, current, total } = this.state
     let dataSource = []
     for (let i = 0; i < tableData.length; i++) {
       dataSource.push({
         key: i,
         ...tableData[i],
       })
+    }
+    const paginationProps = {
+      pageSize: pageSize,
+      current: current,
+      total: total,
+      onChange: (current) => {this.changePage(current)},
     }
     return (
       <Table 
@@ -422,9 +448,8 @@ class Search extends React.Component {
         bordered
         onRowClick={record =>
           this.handleClickRow(record)
-          
         } 
-        pagination= {pagination}
+        pagination= {paginationProps}
         />
     )
   }

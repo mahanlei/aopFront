@@ -3,44 +3,62 @@ import './Search.less'
 import { Input, Select, Row, Col, Icon, Form, Button, Table } from 'antd'
 import { fromJS, toJS } from 'immutable'
 import { fetchKerSearchResult } from '../../services/SearchServices.js'
-class EdgeSearch extends React.Component<any,any> {
+class EdgeSearch extends React.Component<any, any> {
     constructor(props) {
         super(props)
         this.state = {
             loading: false,
             tableData: [],
+            current: 1,
+            pageSize: 20,
+            total: 0,
         }
     }
     componentDidMount() {
         // this.getCheckTypeoptions()
+        const { current, pageSize} = this.state;
         this.setState({ loading: true })
-        fetchKerSearchResult({}).then(res => {
+        fetchKerSearchResult({page: current, size: pageSize}).then(res => {
             this.setState({
                 loading: false,
                 tableData: res.content,
+                total: res.totalElements,
             })
 
-        }) 
+        })
     }
 
 
     handleReset = () => {
         this.props.form.resetFields();
     }
-    handleSearch = (e) => {
-        e.preventDefault();
+    handleSearch = (resetPage:true) => {
+        const { pageSize, current } = this.state;
+        // e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (err) { return }
             this.setState({ loading: true })
-            fetchKerSearchResult(values).then(res => {
+            fetchKerSearchResult({...values, page: current, size: pageSize}).then(res => {
                 this.setState({
                     loading: false,
                     tableData: res.content,
+                    total: res.totalElements,
+                    
                 })
+                if(resetPage){
+                    this.setState({
+                      current: 1,
+                    })
+                  }
 
-            }) //传的参数
+            })
         })
     }
+    changePage = (current) => {
+        this.setState({
+          current: current,
+        },() => this.handleSearch(false);)
+      }
     renderSearchForm() {
         const { getFieldDecorator } = this.props.form
         return (
@@ -130,6 +148,7 @@ class EdgeSearch extends React.Component<any,any> {
         )
     }
     renderTableData() {
+        const { pageSize, current, total, loading } = this.state
         const columns = [
             {
                 title: 'KER-ID',
@@ -163,19 +182,25 @@ class EdgeSearch extends React.Component<any,any> {
             },
         ]
         let dataSource = this.state.tableData
-        
+        const paginationProps = {
+            pageSize: pageSize,
+            current: current,
+            total: total,
+            onChange: (current) => {this.changePage(current)},
+          }
         return (
-        <Table 
-            dataSource={dataSource} 
-            loading={this.state.loading} 
-            columns={columns} 
-            bordered
-            onRow={record => {
-                return {
-                  onClick: this.handleClickRow, // 点击行
-                };
-              }}
-             />
+            <Table
+                dataSource={dataSource}
+                loading={loading}
+                columns={columns}
+                bordered
+                onRow={record => {
+                    return {
+                        onClick: this.handleClickRow, // 点击行
+                    };
+                }}
+                pagination= {paginationProps}
+            />
         )
     }
     render() {
