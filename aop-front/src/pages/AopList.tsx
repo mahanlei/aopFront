@@ -78,7 +78,7 @@ class AopList extends React.Component<any,any> {
             },
             {
               
-                title: '生命阶段',
+                title: '生命周期',
                 dataIndex: 'lifeCycle',
                 filters: [
                     { text: '全生命阶段', value: '全生命阶段' },

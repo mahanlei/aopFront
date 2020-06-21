@@ -30,7 +30,7 @@ class Dashboard extends React.Component {
 
 render() {
     const WhatIsaAop = () => {
-        return <div>aAOP是基于<a href="https://aopkb.oecd.org/">AOP知识库</a>与<a href="https://tox21.gov/">Tox21</a>化学品的体外生物检测信息，前期我们汇编了101种化学品的共600余种的生物检测方法信息，并将这些信息与超过250条AOPs建立联系的AOP应用型网站。</div>
+        return <div>aAOP是基于<a href="https://aopkb.oecd.org/">AOP知识库</a>与<a href="https://tox21.gov/">Tox21</a>化学品的体外生物检测信息，前期我们汇编了101种化学品的共1000余种的生物检测方法信息，并将这些信息与超过250条AOPs建立联系的AOP应用型网站。</div>
     }
     const aAOPTodo = () => {
         return <ol>

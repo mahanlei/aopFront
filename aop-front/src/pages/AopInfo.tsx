@@ -1,10 +1,12 @@
 import React from 'react'
-import { Select } from 'antd'
+import { Select, Table } from 'antd'
 import { ke_attr } from '../utils/ChAndEn.js'
 import { fetchAopInfo, fetchAopNodes, fetchAopEdges } from '../services/AopService'
 import './AopInfo.less'
 import echarts from 'echarts'
-const { Option, OptGroup } = Select
+import { keColumns } from '../pages/search/Search'
+const { Option, OptGroup } = Select;
+
 class AopInfo extends React.Component<any, any> {
     constructor(props) {
         super(props)
@@ -15,7 +17,7 @@ class AopInfo extends React.Component<any, any> {
                 '中文名': '',
                 '物种': '',
                 '性别': '',
-                '生命阶段': '',
+                '生命周期': '',
                 '器官/毒性类型': '',
                 '致癌/遗传毒性': '',
                 // '存活率': '',
@@ -23,6 +25,7 @@ class AopInfo extends React.Component<any, any> {
             },
             nodeLinks: [],
             nodes: [],
+            nodesInfo: [],
         }
     }
     componentDidMount() {
@@ -45,14 +48,29 @@ class AopInfo extends React.Component<any, any> {
             })
         })
         let nodeTemp = []
+        let nodeInfoTemp = []
         let linkTemp = []
         fetchAopNodes(eid).then(res => {
             res.map((item, k) => {
                 let nodeSymbol = this.getNodeSymbol(item, k)
-                let node = { name: nodeSymbol.name, title: item.name, chinese: item.chinese, symbol: nodeSymbol.type, category: nodeSymbol.category, itemStyle: nodeSymbol.itemStyle }
+                let node = {
+                    chinese: item.chinese,
+                    title: item.title,
+                    name: nodeSymbol.name,
+                    symbol: nodeSymbol.type,
+                    category: nodeSymbol.category,
+                    itemStyle: nodeSymbol.itemStyle
+                }
+                let nodeInfo = {
+                    ...item,
+                    id: item.eventId,
+                    category: nodeSymbol.category,
+                }
                 nodeTemp.push(node)
+                nodeInfoTemp.push(nodeInfo)
                 this.setState({
                     nodes: nodeTemp,
+                    nodesInfo: nodeInfoTemp,
                 })
             })
             fetchAopEdges(eid).then(res1 => {
@@ -153,7 +171,7 @@ class AopInfo extends React.Component<any, any> {
             },
             tooltip: {
                 formatter: function (x) {
-                    return x.data.title + "<br/>"+ x.data.chinese;
+                    return x.data.title + "<br/>" + x.data.chinese;
                 }
             },
             legend: [{
@@ -168,8 +186,8 @@ class AopInfo extends React.Component<any, any> {
                     type: 'graph',
                     layout: 'circular',
                     symbolSize: 50,
-                    roam: true,
                     categories: categorys,
+                    roam: 'move',
                     label: {
                         normal: {
                             show: true,
@@ -219,15 +237,24 @@ class AopInfo extends React.Component<any, any> {
             }
         </div>
     }
-    renderGraph = () => {
+    renderGraph(){
         return <div className="graphPanel">
             <div id="graphPanel" style={{ width: '100%', height: 400 }}></div>
+        </div>
+    }
+    renderNodesTable(){
+        const { nodesInfo } = this.state;
+        let nodesColumns = [{title: '', dataIndex: 'category'}, ...keColumns]
+        return <div className="aopInfoCon">
+            <h3 style={{ marginBottom: '18px' }}>节点信息</h3>
+            <Table dataSource={nodesInfo} columns={nodesColumns} bordered pagination={false}/>
         </div>
     }
     render() {
         return (<div className="aopInfocontainer">
             {this.renderAopInfo()}
             {this.renderGraph()}
+            {this.renderNodesTable()}
         </div>)
     }
 }

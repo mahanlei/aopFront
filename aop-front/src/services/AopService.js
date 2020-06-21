@@ -32,7 +32,7 @@ export function fetchAopEdges(id) {
     })
 }
 export function fetchAopNodes(id){
-    return fetch(`${serverIP}/api/chains/search/findByAopId?aopId=${id}`, {
+    return fetch(`${serverIP}/api/events/findByAopId/${id}`, {
         method: 'GET',
         mode: "cors",
         headers: new Headers({
@@ -41,7 +41,7 @@ export function fetchAopNodes(id){
         }),
 
     }).then(res => res.json()).then((json) => {
-        return json._embedded.chains
+        return json
     }).catch((err) => {
         return err
     })

@@ -3,10 +3,9 @@ import './Search.less'
 import { Input, Select, Row, Col, Icon, Form, Button, Table } from 'antd'
 import { fromJS, toJS } from 'immutable'
 import { ke_attr } from '../../utils/ChAndEn.js'
-import { fetchSearchResult,fetchKEInfo } from '../../services/SearchServices.js'
+import { fetchSearchResult, fetchKEInfo } from '../../services/SearchServices.js'
 const { Option, OptGroup } = Select
 export const keColumns = [
-
   {
     title: 'ID',
     dataIndex: 'id',
@@ -14,12 +13,12 @@ export const keColumns = [
   {
     title: '英文名',
     dataIndex: 'title',
-  
+
   },
   {
     title: '中文名',
     dataIndex: 'chinese',
-  
+
   },
   {
     title: '属性',
@@ -35,7 +34,7 @@ export const keColumns = [
         width: 70,
       },
       {
-        title: '生命阶段',
+        title: '生命周期',
         dataIndex: 'lifeCycle',
         width: 160,
       },
@@ -52,22 +51,21 @@ export const keColumns = [
       {
         title: '生物水平',
         dataIndex: 'level',
-        width:90,
+        width: 90,
       },
 
     ]
   },
 ];
-const speciesTypes=['人类', '啮齿', '其他哺乳纲', '鱼类', 
- '昆虫','两栖','鸟类','植物', '其他']
-const sexTypes=['无特异性', '雄性', '雌性']
-const lifeCycleTypes=['胚胎及幼儿', '青春期','成体', '全生命阶段', '无特异性']
-const organTypes=['运动系统', '消化系统','呼吸系统','泌尿系统','生殖系统','内分泌系统',
-  '免疫系统','神经系统','循环系统','急性毒性','其他']
-const cancerTypes=['阳性', '阴性']
+const speciesTypes = ['人类', '啮齿', '其他哺乳纲', '鱼类',
+  '昆虫', '两栖', '鸟类', '植物', '其他']
+const sexTypes = ['无特异性', '雄性', '雌性']
+const lifeCycleTypes = ['胚胎及幼儿', '青春期', '成体', '全生命阶段', '无特异性']
+const organTypes = ['运动系统', '消化系统', '呼吸系统', '泌尿系统', '生殖系统', '内分泌系统',
+  '免疫系统', '神经系统', '循环系统', '急性毒性', '其他']
+const cancerTypes = ['阳性', '阴性']
 const survivalRatesTypes = ['降低']
-const  levelTypes = ['分子', '细胞','组织','器官','个体','种群']
-
+const levelTypes = ['分子', '细胞', '组织', '器官', '个体', '种群']
 class Search extends React.Component {
 
   constructor(props) {
@@ -84,14 +82,20 @@ class Search extends React.Component {
       type: 'events',
       tableData: [],
       loading: false,
+      pagination: {
+        current: 1,
+        pageSize: 10,
+        total: 0,
+      }
     }
   }
   componentDidMount() {
     this.getCheckTypeoptions()
-   
+
   }
-  componentDidUpdate(prevProps, prevState){
-    if(this.props.location.pathname !== prevProps.location.pathname){
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.location.pathname !== prevProps.location.pathname) {
+      this.props.form.resetFields();
       fetchSearchResult(this.props.location.pathname.split('/')[1], {}).then(res =>
         this.setState({
           tableData: res.content,
@@ -99,7 +103,7 @@ class Search extends React.Component {
         })
       )
     }
-  
+
   }
   getCheckTypeoptions = () => {
     const path = window.location.hash
@@ -114,8 +118,8 @@ class Search extends React.Component {
           loading: false
         })
       )
-    
-    } else{
+
+    } else {
       this.setState({
         checkTypeOptions: Object.keys(ke_attr),
         type: 'aops',
@@ -126,7 +130,7 @@ class Search extends React.Component {
           loading: false
         })
       )
-    } 
+    }
   }
   handleClickAddCheckType = () => {
     const { checkTypes } = this.state
@@ -164,7 +168,7 @@ class Search extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (err) { return }
       // const { checkTypes } = this.state
-      let items = {...values}
+      let items = { ...values }
       // checkTypes.map(v => {
       //   let key = v.get('enName');
       //   items[key] = v.get('value')
@@ -192,11 +196,11 @@ class Search extends React.Component {
   }
   handleClickRow = (record) => {
     let subPath = window.location.hash.split('/')[1]
-if(subPath == 'events'){
-this.props.history.push(`/event/${record.id}`)
-} else {
-  this.props.history.push(`/aop/${record.id}`)
-}
+    if (subPath == 'events') {
+      this.props.history.push(`/event/${record.id}`)
+    } else {
+      this.props.history.push(`/aop/${record.id}`)
+    }
   }
   // renderCheckTypes = () => {
   //   const { checkTypes } = this.state
@@ -258,23 +262,23 @@ this.props.history.push(`/event/${record.id}`)
   renderKESearch() {
     const { getFieldDecorator } = this.props.form
     const speciesOptions = []
-    for (let i= 0;i<speciesTypes.length;i++){
+    for (let i = 0; i < speciesTypes.length; i++) {
       speciesOptions.push(<Option key={speciesTypes[i]}>{speciesTypes[i]}</Option>)
     }
     const sexOptions = []
-    for (let i= 0;i<sexTypes.length;i++){
+    for (let i = 0; i < sexTypes.length; i++) {
       sexOptions.push(<Option key={sexTypes[i]}>{sexTypes[i]}</Option>)
     }
     const lifeCycleOptions = []
-    for (let i= 0;i<lifeCycleTypes.length;i++){
+    for (let i = 0; i < lifeCycleTypes.length; i++) {
       lifeCycleOptions.push(<Option key={lifeCycleTypes[i]}>{lifeCycleTypes[i]}</Option>)
     }
     const organOptions = []
-    for (let i= 0;i<organTypes.length;i++){
+    for (let i = 0; i < organTypes.length; i++) {
       organOptions.push(<Option key={organTypes[i]}>{organTypes[i]}</Option>)
     }
     const cancerOptions = []
-    for (let i= 0;i<cancerTypes.length;i++){
+    for (let i = 0; i < cancerTypes.length; i++) {
       cancerOptions.push(<Option key={cancerTypes[i]}>{cancerTypes[i]}</Option>)
     }
     // const survivalRatesOptions = []
@@ -282,18 +286,27 @@ this.props.history.push(`/event/${record.id}`)
     //   survivalRatesOptions.push(<Option key={survivalRatesTypes[i]}>{survivalRatesTypes[i]}</Option>)
     // }
     const levelOptions = []
-    for (let i= 0;i<levelTypes.length;i++){
+    for (let i = 0; i < levelTypes.length; i++) {
       levelOptions.push(<Option key={levelTypes[i]}>{levelTypes[i]}</Option>)
     }
 
     return <React.Fragment>
       <Row gutter={16}>
         <Col span={8}>
-          <Form.Item label={'名称'} className='line'>
+          <Form.Item label={'ID'} className='line' >
+            {getFieldDecorator('id', {
+              rules: [],
+            })(
+              <Input placeholder="输入ID" style={{ width: 220 }} />
+            )}
+          </Form.Item>
+        </Col>
+        <Col span={8}>
+          <Form.Item label={'名称'} className='line' >
             {getFieldDecorator('name', {
               rules: [],
             })(
-              <Input placeholder="输入英文名称" style={{ width: 230 }} />
+              <Input placeholder="输入英文名称" style={{ width: 220 }} />
             )}
           </Form.Item>
         </Col>
@@ -302,21 +315,11 @@ this.props.history.push(`/event/${record.id}`)
             {getFieldDecorator('chinese', {
               rules: [],
             })(
-              <Input placeholder="输入中文名称" style={{ width: 230 }} />
+              <Input placeholder="输入中文名称" style={{ width: 220 }} />
             )}
           </Form.Item>
         </Col>
-        <Col span={8}>
-          <Form.Item label={'物种'} className='line'>
-            {getFieldDecorator('species', {
-              rules: [],
-            })(
-              <Select  allowClear style={{ width: 230 }} >
-              {speciesOptions}
-              </Select>
-            )}
-          </Form.Item>
-        </Col>
+
       </Row>
       <Row gutter={16}>
         <Col span={8}>
@@ -324,19 +327,19 @@ this.props.history.push(`/event/${record.id}`)
             {getFieldDecorator('sex', {
               rules: [],
             })(
-              <Select allowClear style={{ width: 230 }} >
-              {sexOptions}
+              <Select allowClear  >
+                {sexOptions}
               </Select>
             )}
           </Form.Item>
         </Col>
         <Col span={8}>
-          <Form.Item label={'生命阶段'} className='line'>
+          <Form.Item label={'生命周期'} className='line'>
             {getFieldDecorator('lifeCycle', {
               rules: [],
             })(
-              <Select allowClear style={{ width: 230 }} >
-              {lifeCycleOptions}
+              <Select allowClear  >
+                {lifeCycleOptions}
               </Select>
             )}
           </Form.Item>
@@ -346,8 +349,8 @@ this.props.history.push(`/event/${record.id}`)
             {getFieldDecorator('organ', {
               rules: [],
             })(
-              <Select allowClear style={{ width: 230 }} >
-              {organOptions}
+              <Select allowClear  >
+                {organOptions}
               </Select>
             )}
           </Form.Item>
@@ -359,8 +362,8 @@ this.props.history.push(`/event/${record.id}`)
             {getFieldDecorator('cancer', {
               rules: [],
             })(
-              <Select allowClear style={{ width: 230 }} >
-              {cancerOptions}
+              <Select allowClear >
+                {cancerOptions}
               </Select>
             )}
           </Form.Item>
@@ -370,7 +373,7 @@ this.props.history.push(`/event/${record.id}`)
             {getFieldDecorator('survivalRates', {
               rules: [],
             })(
-              <Select allowClear style={{ width: 230 }} >
+              <Select allowClear >
               {survivalRatesOptions}
               </Select>
             )}
@@ -381,8 +384,19 @@ this.props.history.push(`/event/${record.id}`)
             {getFieldDecorator('level', {
               rules: [],
             })(
-              <Select allowClear style={{ width: 230 }} >
-              {levelOptions}
+              <Select allowClear >
+                {levelOptions}
+              </Select>
+            )}
+          </Form.Item>
+        </Col>
+        <Col span={8}>
+          <Form.Item label={'物种'} className='line'>
+            {getFieldDecorator('species', {
+              rules: [],
+            })(
+              <Select allowClear>
+                {speciesOptions}
               </Select>
             )}
           </Form.Item>
@@ -391,8 +405,8 @@ this.props.history.push(`/event/${record.id}`)
       {/* {this.renderCheckTypes()} */}
     </React.Fragment>
   }
- renderTableData() {
-    const { tableData } = this.state
+  renderTableData() {
+    const { tableData, pagination } = this.state
     let dataSource = []
     for (let i = 0; i < tableData.length; i++) {
       dataSource.push({
@@ -401,13 +415,17 @@ this.props.history.push(`/event/${record.id}`)
       })
     }
     return (
-      <Table dataSource={dataSource} 
-      loading={this.state.loading} 
-      columns={keColumns} 
-      bordered
-      onRowClick={ record => 
-         this.handleClickRow(record)
-      } />
+      <Table 
+        dataSource={dataSource}
+        loading={this.state.loading}
+        columns={keColumns}
+        bordered
+        onRowClick={record =>
+          this.handleClickRow(record)
+          
+        } 
+        pagination= {pagination}
+        />
     )
   }
   render() {

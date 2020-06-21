@@ -129,7 +129,7 @@ class Environment extends React.Component<any,any> {
               </Form.Item>
             </Col>
             <Col span={8}>
-              <Form.Item label={'生命阶段'} className='line'>
+              <Form.Item label={'生命周期'} className='line'>
                 {getFieldDecorator('lifeCycle', {
                   rules: [],
                 })(
@@ -200,7 +200,7 @@ class Environment extends React.Component<any,any> {
 
             },
             {
-                title: '生命阶段',
+                title: '生命周期',
                 dataIndex: 'lifeCycle',
 
             },
