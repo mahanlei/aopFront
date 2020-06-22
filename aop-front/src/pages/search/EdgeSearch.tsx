@@ -9,7 +9,7 @@ class EdgeSearch extends React.Component<any, any> {
         this.state = {
             loading: false,
             tableData: [],
-            current: 1,
+            current: 0,
             pageSize: 20,
             total: 0,
         }
@@ -32,7 +32,7 @@ class EdgeSearch extends React.Component<any, any> {
     handleReset = () => {
         this.props.form.resetFields();
     }
-    handleSearch = (resetPage:true) => {
+    handleSearch = () => {
         const { pageSize, current } = this.state;
         // e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -45,19 +45,13 @@ class EdgeSearch extends React.Component<any, any> {
                     total: res.totalElements,
                     
                 })
-                if(resetPage){
-                    this.setState({
-                      current: 1,
-                    })
-                  }
-
             })
         })
     }
-    changePage = (current) => {
+    changePage = (current: number) => {
         this.setState({
           current: current,
-        },() => this.handleSearch(false);)
+        },() => this.handleSearch())
       }
     renderSearchForm() {
         const { getFieldDecorator } = this.props.form
@@ -184,9 +178,9 @@ class EdgeSearch extends React.Component<any, any> {
         let dataSource = this.state.tableData
         const paginationProps = {
             pageSize: pageSize,
-            current: current,
+            current: current + 1,
             total: total,
-            onChange: (current) => {this.changePage(current)},
+            onChange: (current) => {this.changePage(current - 1)},
           }
         return (
             <Table
@@ -215,7 +209,13 @@ class EdgeSearch extends React.Component<any, any> {
 
                     </Form>
                     <div style={{ textAlign: 'right' }}>
-                        <Button type="primary" onClick={this.handleSearch}>查询</Button>
+                        <Button type="primary" onClick={() => {
+                            this.setState({
+                                current: 0
+                            },() => this.handleSearch())
+                         }
+                        }
+                        >查询</Button>
                         <Button style={{ marginLeft: 14, marghtRight: 30 }} onClick={this.handleReset}>
                             清除
               </Button></div>

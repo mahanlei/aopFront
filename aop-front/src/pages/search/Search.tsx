@@ -82,7 +82,7 @@ class Search extends React.Component {
       type: 'events',
       tableData: [],
       loading: false,
-      current: 1,
+      current: 0,
       pageSize: 20,
       total: 0,
     }
@@ -95,13 +95,13 @@ class Search extends React.Component {
     const { pageSize, current } = this.state;
     if (this.props.location.pathname !== prevProps.location.pathname) {
       this.props.form.resetFields();
-      fetchSearchResult(this.props.location.pathname.split('/')[1], {size: pageSize, page: 1}).then(res =>
+      fetchSearchResult(this.props.location.pathname.split('/')[1], { size: pageSize, page: 1 }).then(res =>
         this.setState({
           tableData: res.content,
           loading: false,
           total: res.totalElements,
           pageSize: res.size,
-          current: 1,
+          current: 0,
         })
       )
     }
@@ -115,7 +115,7 @@ class Search extends React.Component {
         checkTypeOptions: Object.keys(ke_attr),
         type: 'events',
       })
-      fetchSearchResult('events', {size: pageSize, page: current}).then(res =>
+      fetchSearchResult('events', { size: pageSize, page: current }).then(res =>
         this.setState({
           tableData: res.content,
           loading: false,
@@ -129,7 +129,7 @@ class Search extends React.Component {
         checkTypeOptions: Object.keys(ke_attr),
         type: 'aops',
       })
-      fetchSearchResult('aops', {size: pageSize, page: current}).then(res =>
+      fetchSearchResult('aops', { size: pageSize, page: current }).then(res =>
         this.setState({
           tableData: res.content,
           loading: false,
@@ -170,8 +170,8 @@ class Search extends React.Component {
   handleReset = () => {
     this.props.form.resetFields();
   }
-  handleSearch = (resetPage:true) => {
-    const{ pageSize, current } = this.state;
+  handleSearch = () => {
+    const { pageSize, current } = this.state;
     // e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (err) { return }
@@ -201,11 +201,7 @@ class Search extends React.Component {
           loading: false,
           total: res.totalElements,
         }))
-        if(resetPage){
-          this.setState({
-            current: 1,
-          })
-        }
+      
     })
   }
   handleClickRow = (record) => {
@@ -219,7 +215,7 @@ class Search extends React.Component {
   changePage = (current) => {
     this.setState({
       current: current,
-    },() => this.handleSearch(false))
+    }, () => this.handleSearch())
   }
   // renderCheckTypes = () => {
   //   const { checkTypes } = this.state
@@ -424,7 +420,7 @@ class Search extends React.Component {
       {/* {this.renderCheckTypes()} */}
     </React.Fragment>
   }
-  
+
   renderTableData() {
     const { tableData, pageSize, current, total } = this.state
     let dataSource = []
@@ -436,21 +432,21 @@ class Search extends React.Component {
     }
     const paginationProps = {
       pageSize: pageSize,
-      current: current,
+      current: current + 1,
       total: total,
-      onChange: (current) => {this.changePage(current)},
+      onChange: (current) => { this.changePage(current - 1) },
     }
     return (
-      <Table 
+      <Table
         dataSource={dataSource}
         loading={this.state.loading}
         columns={keColumns}
         bordered
         onRowClick={record =>
           this.handleClickRow(record)
-        } 
-        pagination= {paginationProps}
-        />
+        }
+        pagination={paginationProps}
+      />
     )
   }
   render() {
@@ -463,7 +459,11 @@ class Search extends React.Component {
             {this.renderKESearch()}
           </Form>
           <div style={{ textAlign: 'right' }}>
-            <Button type="primary" onClick={this.handleSearch}>查询</Button>
+            <Button type="primary" onClick={() => {
+              this.setState({
+                current: 0
+              }, () => this.handleSearch())
+            }}>查询</Button>
             <Button style={{ marginLeft: 14, marghtRight: 30 }} onClick={this.handleReset}>
               清除
               </Button></div>
