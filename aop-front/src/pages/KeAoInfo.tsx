@@ -131,7 +131,7 @@ class SingleForcast extends React.Component<any,any> {
             },
 
             {
-                title: 'AOs',
+                title: 'AO',
                 children: [
                     {
                         title: 'ID',
@@ -139,7 +139,7 @@ class SingleForcast extends React.Component<any,any> {
                     },
                     {
                         title: '英文名',
-                        dataIndex: 'aoTitlw',
+                        dataIndex: 'aoTitle',
                     },
                     {
                         title: '中文名',
@@ -177,6 +177,7 @@ class SingleForcast extends React.Component<any,any> {
                 loading={this.state.loading}
                 columns={columns}
                 bordered
+                
             />
         )
     }

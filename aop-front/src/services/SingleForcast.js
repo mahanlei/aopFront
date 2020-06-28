@@ -1,7 +1,37 @@
 import { serverIP } from "../utils/GlobalConstants"
 
-export function fetchToxInfo(queryName) {
-    return fetch(`${serverIP}/api/tox/${queryName}?size=${2000}`, {
+export function fetchToxInfo(params) {
+    return fetch(`${serverIP}/api/tox/${params.name}?size=${params.size}&page=${params.page}`, {
+        method: 'GET',
+        mode: "cors",
+        headers: new Headers({
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        }),
+    }).then(res => res.json()).then((json) => {
+        return json
+    }).catch((err) => {
+        return err
+    })
+}
+
+export function fetchToxReport(queryName) {
+    return fetch(`${serverIP}/api/tox/report/${queryName}?size=${2000}`, {
+        method: 'GET',
+        mode: "cors",
+        headers: new Headers({
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+        }),
+    }).then(res => res.json()).then((json) => {
+        return json
+    }).catch((err) => {
+        return err
+    })
+}
+
+export function fetchToxTableAll(queryName) {
+    return fetch(`${serverIP}/api/tox/collect/${queryName}?size=${2000}`, {
         method: 'GET',
         mode: "cors",
         headers: new Headers({
@@ -30,8 +60,8 @@ export function fetchKEandAO(bioassay,effect) {
     })
 }
 
-export function fetchAllInfo() {
-    return fetch(`${serverIP}/api/tox/all?size=${2000}`, {
+export function fetchAllInfo(params) {
+    return fetch(`${serverIP}/api/tox/all?size=${params.size}&page=${params.page}`, {
         method: 'GET',
         mode: "cors",
         headers: new Headers({
