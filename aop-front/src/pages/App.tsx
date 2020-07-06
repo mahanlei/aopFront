@@ -96,7 +96,7 @@ class App extends React.Component {
           </Content>
           <Footer style={{backgroundColor: "#FFF"}}>
             <div style={{ display: "flex" }}>
-              <img src={njuEnvIcon} width={160} style={{ marginTop: "-8px" }} />
+              <img src={njuEnvIcon} width={160} height={48} style={{ marginTop: "-8px" }} />
               <div style={{ marginLeft: 105 }}>
                 <img src={sccIcon} width="36px" height="36px" style={{ marginRight: 6 }} />
                 <span style={{ fontWeight: 500 }}>生态环境部固体废物与化学品管理技术中心</span>
