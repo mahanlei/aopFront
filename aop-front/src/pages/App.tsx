@@ -96,11 +96,12 @@ class App extends React.Component {
           </Content>
           <Footer style={{backgroundColor: "#FFF"}}>
             <div style={{ display: "flex" }}>
-              <div style={{ marginRight: 105 }}>
+              <img src={njuEnvIcon} width={160} style={{ marginTop: "-8px" }} />
+              <div style={{ marginLeft: 105 }}>
                 <img src={sccIcon} width="36px" height="36px" style={{ marginRight: 6 }} />
                 <span style={{ fontWeight: 500 }}>生态环境部固体废物与化学品管理技术中心</span>
               </div>
-              <img src={njuEnvIcon} width={160} style={{ marginTop: "-4px" }} />
+              
             </div>
             <p style={{ marginTop: 9 }}>aAOP网站由生态环境部固体废物与化学品管理技术中心资助，由南京大学环境学院生态毒理与健康风险团队负责完成。</p>
           </Footer>
