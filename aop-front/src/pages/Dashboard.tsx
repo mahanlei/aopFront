@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { unstable_Profiler } from 'react'
 import './DashBoard.less'
-import { Collapse } from 'antd';
+import { Collapse, Button } from 'antd';
 import {
     Link,
 } from "react-router-dom";
@@ -21,6 +21,25 @@ class Dashboard extends React.Component {
             const a = document.createElement('a')
             a.href = url
             a.download = `数据文件.zip`
+            a.click()
+            window.URL.revokeObjectURL(url)
+        }).catch((err) => {
+            return err
+        })
+    }
+
+    downloadHelp = () => {
+        fetch(`${serverIP}/api/download/instruction`, {
+            method: 'GET',
+            mode: 'cors',
+            headers: new Headers({
+                'Content-type': 'application/json',
+            }),
+        }).then(res => res.blob()).then((blob) => {
+            const url = window.URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url
+            a.download = '用户使用说明.pdf'
             a.click()
             window.URL.revokeObjectURL(url)
         }).catch((err) => {
@@ -86,7 +105,7 @@ render() {
             </Panel>
         </Collapse>
         <h2>帮助</h2>
-        <p>请查看用户使用说明增加附件</p>
+        <Button type="link" onClick={this.downloadZip}>下载用户使用说明</Button>
     </div>
 }
 }
