@@ -105,7 +105,7 @@ render() {
             </Panel>
         </Collapse>
         <h2>帮助</h2>
-        <Button type="link" onClick={this.downloadZip}>下载用户使用说明</Button>
+        <Button type="link" onClick={this.downloadHelp}>下载用户使用说明</Button>
     </div>
 }
 }
