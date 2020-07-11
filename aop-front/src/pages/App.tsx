@@ -6,7 +6,7 @@ import {
   Link,
   withRouter,
 } from "react-router-dom";
-import { Menu, Icon, Layout, Button } from 'antd'
+import { Menu, Icon, Layout, BackTop } from 'antd'
 import Search from './search/Search'
 import EdgeSearch from './search/EdgeSearch'
 import EventInfo from './EventInfo'
@@ -15,7 +15,6 @@ import SingleForcast from './SingleForcast'
 import Dashboard from './Dashboard'
 import './App.less'
 import KeAoInfo from "./KeAoInfo";
-import { EnvironmentPlugin } from "webpack";
 import Environment from "./Environment";
 import AopList from "./AopList";
 import AopChemicalInfo from "./AopChemicalInfo";
@@ -93,6 +92,7 @@ class App extends React.Component {
                 <Route path="/aopChemicalInfo" component={AopChemicalInfo} />
               </Switch>
             </div>
+           
           </Content>
           <Footer style={{backgroundColor: "#FFF"}}>
             <div style={{ display: "flex" }}>

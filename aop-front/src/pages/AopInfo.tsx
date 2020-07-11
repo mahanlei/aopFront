@@ -244,9 +244,9 @@ class AopInfo extends React.Component<any, any> {
     }
     renderNodesTable(){
         const { nodesInfo } = this.state;
-        let nodesColumns = [{title: '', dataIndex: 'category'}, ...keColumns]
+        let nodesColumns = [{title: '节点类型', dataIndex: 'category'}, ...keColumns]
         return <div className="aopInfoCon">
-            <h3 style={{ marginBottom: '18px' }}>节点信息</h3>
+            <h3 style={{ marginBottom: '18px' }}>AOP组成</h3>
             <Table dataSource={nodesInfo} columns={nodesColumns} bordered pagination={false}/>
         </div>
     }

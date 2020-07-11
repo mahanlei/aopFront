@@ -159,6 +159,10 @@ class EdgeSearch extends React.Component<any, any> {
                         title: '英文名',
                         dataIndex: 'sourceTitle',
                     },
+                    {
+                        title: '中文名',
+                        dataIndex: 'sourceChinese',
+                    },
                 ]
             },
             {
@@ -171,6 +175,10 @@ class EdgeSearch extends React.Component<any, any> {
                     {
                         title: '英文名',
                         dataIndex: 'targetTitle',
+                    },
+                    {
+                        title: '中文名',
+                        dataIndex: 'targetChinese',
                     },
                 ]
             },

@@ -1,10 +1,17 @@
 import React from 'react'
-import { Input, Row, Col, Form, Button, Table } from 'antd'
+import { Input, Row, Col, Form, Button, Table, Anchor, BackTop } from 'antd'
 import './SingleForcast.less'
-import {fetchToxInfo,fetchAllInfo,fetchToxReport,fetchToxTableAll} from '../services/SingleForcast'
+import { fetchToxInfo, fetchAllInfo, fetchToxReport, fetchToxTableAll } from '../services/SingleForcast'
 import echarts from 'echarts'
-// import echarts from 'echarts'
-class SingleForcast extends React.Component<any,any> {
+
+const { Link } = Anchor;
+const MODULE_TYPE = {
+    detection_gather: 0,
+    detection_info: 1,
+    toxicity_prediction: 2,
+
+}
+class SingleForcast extends React.Component<any, any> {
     constructor(props) {
         super(props)
         // this.tryRestoreComponent();
@@ -13,14 +20,14 @@ class SingleForcast extends React.Component<any,any> {
             loading: false,
             tableData: [],
             biodetectionTableData: [],
-            bioLoading:false,
-            allTableData:[],
-            allLoading:false,
-            isAll:true,
+            bioLoading: false,
+            allTableData: [],
+            allLoading: false,
+            isAll: true,
             current: 0,
             pageSize: 20,
             total: 0,
-            load:true,
+            load: true,
         }
 
     }
@@ -45,11 +52,11 @@ class SingleForcast extends React.Component<any,any> {
     // }
 
     componentDidMount() {
-       this.getAllToxData();
+        this.getAllToxData();
     }
-      getAllToxData(){
-        const { current, pageSize} = this.state;
-        console.log(current+" "+pageSize);
+    getAllToxData() {
+        const { current, pageSize } = this.state;
+        console.log(current + " " + pageSize);
         this.setState({ loading: true })
         fetchAllInfo({ size: pageSize, page: current }).then(res => {
             this.setState({
@@ -58,7 +65,7 @@ class SingleForcast extends React.Component<any,any> {
                 total: res.totalElements,
             })
         }) //传的参数
-      }
+    }
 
     // componentWillUnmount() {
     //     // 备份当前的页面状态
@@ -122,15 +129,15 @@ class SingleForcast extends React.Component<any,any> {
                 dataIndex: 'intendedTargetFamily',
             },
             {
-                title: 'AC50(μM)',
+                title: '50%的最大生物活性浓度AC50（μM）',
                 dataIndex: 'ac50',
                 sorter: (a, b) => a.ac50 - b.ac50,
             },
             {
-                title:'操作',
-                render: (text, record) =>record.hasRes==true ? 
-                (<a onClick={()=>this.handleClickRow(record)}>查看结果</a>) 
-                : null,
+                title: '操作',
+                render: (text, record) => record.hasRes == true ?
+                    (<a onClick={() => this.handleClickRow(record)}>查看结果</a>)
+                    : null,
             },
         ]
         let dataSource = this.state.tableData
@@ -138,8 +145,8 @@ class SingleForcast extends React.Component<any,any> {
             pageSize: pageSize,
             current: current + 1,
             total: total,
-            onChange: (current) => {this.changePage(current - 1)},
-          }
+            onChange: (current) => { this.changePage(current - 1) },
+        }
         return (
             <Table
                 dataSource={dataSource}
@@ -147,31 +154,32 @@ class SingleForcast extends React.Component<any,any> {
                 columns={columns}
                 bordered
                 pagination={paginationProps}
-                
+
             />
         )
     }
 
     changePage = (current: number) => {
-        const isAll=this.state.isAll;
-        if(isAll){
+        const isAll = this.state.isAll;
+        if (isAll) {
             console.log(isAll)
             this.setState({
                 current: current,
-              },() => this.getAllToxData())
-        }else{
-        this.setState({
-          current: current,
-        },() => this.getToxTableData())
+            }, () => this.getAllToxData())
+        } else {
+            this.setState({
+                current: current,
+            }, () => this.getToxTableData())
         }
-      }
+    }
 
 
     renderBiodetectionTableData() {
+        const { biodetectionTableData, bioLoading } = this.state;
         const columns = [
             {
                 title: '生物检测信息汇总',
-                children:[
+                children: [
                     {
                         title: '生物检测目标类型',
                         dataIndex: 'intendedTargetFamily',
@@ -190,18 +198,21 @@ class SingleForcast extends React.Component<any,any> {
                     },
                 ]
             },
-            
+
         ]
-        let dataSource = this.state.biodetectionTableData
-        
+        let dataSource = biodetectionTableData
+
         return (
-            <Table
-                dataSource={dataSource}
-                loading={this.state.bioLoading}
-                columns={columns}
-                bordered
-                
-            />
+            <>
+                <Table
+                    dataSource={dataSource}
+                    loading={bioLoading}
+                    columns={columns}
+                    bordered
+
+                />
+                {biodetectionTableData.length > 0 && this.renderGraph()}
+            </>
         )
     }
 
@@ -210,14 +221,14 @@ class SingleForcast extends React.Component<any,any> {
         const columns = [
             {
                 title: '化学品生物检测',
-                children:[
+                children: [
                     {
                         title: '化学品名称',
                         dataIndex: 'chemical',
                         render: (value, row) => {
                             return {
                                 children: value,
-                                props: {rowSpan:row.aoSpan},
+                                props: { rowSpan: row.aoSpan },
                             };
                         },
                     },
@@ -227,7 +238,7 @@ class SingleForcast extends React.Component<any,any> {
                         render: (value, row) => {
                             return {
                                 children: value,
-                                props: {rowSpan:row.aoSpan},
+                                props: { rowSpan: row.aoSpan },
                             };
                         },
                     },
@@ -237,7 +248,7 @@ class SingleForcast extends React.Component<any,any> {
                         render: (value, row) => {
                             return {
                                 children: value,
-                                props: {rowSpan:row.aoSpan},
+                                props: { rowSpan: row.aoSpan },
                             };
                         },
                     },
@@ -247,7 +258,7 @@ class SingleForcast extends React.Component<any,any> {
                         render: (value, row) => {
                             return {
                                 children: value,
-                                props: {rowSpan:row.aoSpan},
+                                props: { rowSpan: row.aoSpan },
                             };
                         },
                     },
@@ -257,7 +268,7 @@ class SingleForcast extends React.Component<any,any> {
                         render: (value, row) => {
                             return {
                                 children: value,
-                                props: {rowSpan:row.aoSpan},
+                                props: { rowSpan: row.aoSpan },
                             };
                         },
                     },
@@ -267,7 +278,7 @@ class SingleForcast extends React.Component<any,any> {
                         render: (value, row) => {
                             return {
                                 children: value,
-                                props: {rowSpan:row.aoSpan},
+                                props: { rowSpan: row.aoSpan },
                             };
                         },
                     },
@@ -277,7 +288,7 @@ class SingleForcast extends React.Component<any,any> {
                         render: (value, row) => {
                             return {
                                 children: value,
-                                props: {rowSpan:row.aoSpan},
+                                props: { rowSpan: row.aoSpan },
                             };
                         },
                     },
@@ -292,7 +303,7 @@ class SingleForcast extends React.Component<any,any> {
                         render: (value, row) => {
                             return {
                                 children: value,
-                                props: {rowSpan:row.aoSpan},
+                                props: { rowSpan: row.aoSpan },
                             };
                         },
                     },
@@ -302,10 +313,10 @@ class SingleForcast extends React.Component<any,any> {
                         render: (value, row) => {
                             return {
                                 children: value,
-                                props: {rowSpan:row.aoSpan},
+                                props: { rowSpan: row.aoSpan },
                             };
                         },
-                        
+
                     },
                     {
                         title: '中文名',
@@ -313,10 +324,10 @@ class SingleForcast extends React.Component<any,any> {
                         render: (value, row) => {
                             return {
                                 children: value,
-                                props: {rowSpan:row.aoSpan},
+                                props: { rowSpan: row.aoSpan },
                             };
                         },
-                        
+
                     },
 
                 ]
@@ -366,7 +377,7 @@ class SingleForcast extends React.Component<any,any> {
 
         ]
         let dataSource = this.state.allTableData
-        
+
         return (
             <Table
                 dataSource={dataSource}
@@ -374,16 +385,12 @@ class SingleForcast extends React.Component<any,any> {
                 columns={columns}
                 bordered
                 scroll={{ x: 1300 }}
-                
             />
         )
     }
 
-
-    
-
     handleClickRow = (record) => {
-        var path="/keao/"+encodeURI(encodeURI(record.bioassay))+"/"+record.effect;
+        var path = "/keao/" + encodeURI(encodeURI(record.bioassay)) + "/" + record.effect;
         this.props.history.push(path);
     }
 
@@ -391,47 +398,47 @@ class SingleForcast extends React.Component<any,any> {
         this.props.form.resetFields();
     }
 
-    getToxTableData(){
+    getToxTableData() {
         const { pageSize, current } = this.state;
         this.props.form.validateFields((err, values) => {
             if (err) { return }
-        let items = {name:values.name, page: current, size: pageSize }
-        fetchToxInfo(items).then(res => {
-            this.setState({
-                loading: false,
-                tableData: res.content,
-                total:res.totalElements,
+            let items = { name: values.name, page: current, size: pageSize }
+            fetchToxInfo(items).then(res => {
+                this.setState({
+                    loading: false,
+                    tableData: res.content,
+                    total: res.totalElements,
+                })
             })
         })
-        }) 
     }
 
     handleSearch = () => {
         this.setState({
-            isAll:false,
-        },()=>{console.log()})
+            isAll: false,
+        }, () => { console.log() })
         const { pageSize, current } = this.state;
         //e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (err) { return }
-            this.setState({ loading: true,bioLoading:true,allLoading:true })
+            this.setState({ loading: true, bioLoading: true, allLoading: true })
             this.getToxTableData();
-            
+
             fetchToxReport(values.name).then(res => {
                 let array = [];
-                res.targetFamilyVOList.map(temp=>{
-                    let ac50=""
-                    if(temp.lowestAC!=undefined||temp.lowestAC!=null){
-                        ac50=temp.lowestAC+"~"+temp.highestAC
+                res.targetFamilyVOList.map(temp => {
+                    let ac50 = ""
+                    if (temp.lowestAC != undefined || temp.lowestAC != null) {
+                        ac50 = temp.lowestAC + "~" + temp.highestAC
                     }
-                    array=[
+                    array = [
                         ...array,
 
                         {
-                            intendedTargetFamily:temp.intendedTargetFamily,
-                            negative:temp.negative,
-                            positive:temp.positive,
-                            ac50:ac50,
+                            intendedTargetFamily: temp.intendedTargetFamily,
+                            negative: temp.negative,
+                            positive: temp.positive,
+                            ac50: ac50,
 
                         }
                     ]
@@ -439,78 +446,78 @@ class SingleForcast extends React.Component<any,any> {
                 this.setState({
                     bioLoading: false,
                     biodetectionTableData: array,
-                },() => { this.getChartOption() })
-                
+                }, () => { this.getChartOption() })
 
-            }) 
+
+            })
             fetchToxTableAll(values.name).then(res => {
                 let arr = [];
-                let count=0;
-                const tableSize=10;
-                res.map(temp=>{
-                const len = temp.aos.length;
-                temp.aos.map((aoItem,index)=>{
-                    count=count+1;
-                    let tempSize=index === 0 ? len : 0;
-                    if(tempSize===0&&count%tableSize===1&&count>tableSize){
-                        tempSize=len-index;
-                    }
-                    arr = [
-                        ...arr,
-                        {
-                            chemical:temp.tox.chemical,
-                            casrn:temp.tox.casrn,
-                            assayName:temp.tox.assayName,
-                            bioassay:temp.tox.bioassay,
-                            effect:temp.tox.chemical,
-                            intendedTargetFamily:temp.tox.intendedTargetFamily,
-                            ac50:temp.tox.ac50,
-                            keId:temp.ke.id,
-                            keTitle:temp.ke.title,
-                            keChinese:temp.ke.chinese,
-                            aoId:aoItem.event.id,
-                            aoTitle:aoItem.event.title,
-                            aoChinese:aoItem.event.chinese,
-                            aoSpecies:aoItem.event.species,
-                            aoOrgan:aoItem.event.organ,
-                            aoCancer:aoItem.event.cancer,
-                            aolifeCycle:aoItem.event.lifeCycle,
-                            aoLevel:aoItem.event.level,
-                            distance:aoItem.distance,
-                            aoSpan:tempSize
+                let count = 0;
+                const tableSize = 10;
+                res.map(temp => {
+                    const len = temp.aos.length;
+                    temp.aos.map((aoItem, index) => {
+                        count = count + 1;
+                        let tempSize = index === 0 ? len : 0;
+                        if (tempSize === 0 && count % tableSize === 1 && count > tableSize) {
+                            tempSize = len - index;
                         }
-                    ]
+                        arr = [
+                            ...arr,
+                            {
+                                chemical: temp.tox.chemical,
+                                casrn: temp.tox.casrn,
+                                assayName: temp.tox.assayName,
+                                bioassay: temp.tox.bioassay,
+                                effect: temp.tox.effect,
+                                intendedTargetFamily: temp.tox.intendedTargetFamily,
+                                ac50: temp.tox.ac50,
+                                keId: temp.ke.id,
+                                keTitle: temp.ke.title,
+                                keChinese: temp.ke.chinese,
+                                aoId: aoItem.event.id,
+                                aoTitle: aoItem.event.title,
+                                aoChinese: aoItem.event.chinese,
+                                aoSpecies: aoItem.event.species,
+                                aoOrgan: aoItem.event.organ,
+                                aoCancer: aoItem.event.cancer,
+                                aolifeCycle: aoItem.event.lifeCycle,
+                                aoLevel: aoItem.event.level,
+                                distance: aoItem.distance,
+                                aoSpan: tempSize
+                            }
+                        ]
+                        return arr
+                    })
                     return arr
                 })
-                return arr
+                const tableData = arr.map((item, index) => {
+                    item.key = index;
+                    return item;
+                })
+                this.setState({
+                    allLoading: false,
+                    allTableData: tableData,
+                })
+
             })
-            const tableData = arr.map((item, index) => {
-                item.key = index;
-                return item;
-            })
-            this.setState({
-                allLoading: false,
-                allTableData: tableData,
-            })
-            
-            }) 
-        
+
         })
 
     }
     getChartOption = () => {
-        const { info } = this.state
+        const { info, biodetectionTableData } = this.state
         var myChart = echarts.init(document.getElementById('graphPanel'))
-        let intendedTargetFamilyList=[];
-        let negativeList=[];
-        let positiveList=[];
-        this.state.biodetectionTableData.map(temp=>{
-            if(temp.intendedTargetFamily!='合计'){
+        let intendedTargetFamilyList = [];
+        let negativeList = [];
+        let positiveList = [];
+        biodetectionTableData.map(temp => {
+            if (temp.intendedTargetFamily != '合计') {
                 intendedTargetFamilyList.push(temp.intendedTargetFamily)
                 negativeList.push(temp.negative)
                 positiveList.push(temp.positive)
             }
-        
+
         })
         let option = {
             title: {
@@ -519,28 +526,33 @@ class SingleForcast extends React.Component<any,any> {
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
-                  type: 'shadow'
+                    type: 'shadow'
                 },
             },
             legend: {
-                data: ['无生物检测活性数目', '有生物检测活性数目']
+                data: ['有生物检测活性数目', '无生物检测活性数目']
             },
             xAxis: {},
-            yAxis: {data: intendedTargetFamilyList},
+            yAxis: { data: intendedTargetFamilyList },
             series: [
                 {
-                name:'无生物检测活性数目',
-                type: 'bar',
-                stack: '总量',
-                label: {
-                    normal: {
-                        position: 'insideRight'
-                    }
-                },
-                data: negativeList,
+                    name: '有生物检测活性数目',
+                    type: 'bar',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            position: 'insideRight'
+                        }
+                       
+                    },
+                    itemStyle:{
+                        color:  'rgb(112,166,172)',
+                    },
+                    data: positiveList,
+
                 },
                 {
-                    name:'有生物检测活性数目',
+                    name: '无生物检测活性数目',
                     type: 'bar',
                     stack: '总量',
                     label: {
@@ -548,27 +560,39 @@ class SingleForcast extends React.Component<any,any> {
                             position: 'insideRight'
                         }
                     },
-                    data: positiveList,
-
+                    itemStyle:{
+                        color:  'rgb(173,173,173)',
+                    },
+                    data: negativeList,
                 },
-        ]
+
+            ]
         }
         myChart.setOption(option)
     }
 
-    renderGraph(){
-        return <div className="graphPanel">
+    handleClickFun = (e, link) => {
+        e.preventDefault();
+        if (link.href) {
+            // 找到锚点对应得的节点
+            let element = document.getElementById(link.href);
+            // 如果对应id的锚点存在，就跳滚动到锚点顶部
+            element && element.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        }
+    };
+    renderGraph() {
+        return <div className="graphPanel" id="graph">
             <div id="graphPanel" style={{ width: '100%', height: 600 }}></div>
         </div>
     }
 
     render() {
-
         return (
-            <div className="container">
-                <div className="search">
+            <div className="container" id="wholePage">
+               
+                <div className="search" id="search">
                     <Form className='ant-advanced-search-form' >
-                        <h3 style={{ marginBottom: '18px' }}>化学品搜索</h3>
+                        <h3>化学品搜索</h3>
                         {this.renderSearchForm()}
                     </Form>
                     <div style={{ textAlign: 'right' }}>
@@ -576,26 +600,32 @@ class SingleForcast extends React.Component<any,any> {
                         <Button style={{ marginLeft: 14, marghtRight: 30 }} onClick={this.handleReset}>
                             清除
                         </Button>
+                        
                     </div>
+                    <div >
+                            <h4 style={{ marginBottom: 10 }}>快速到达：</h4>
+                            <Anchor onClick={this.handleClickFun} getContainer={() => document.getElementById('wholePage')} affix={false}>
+                                <Link href="search" title="化学品搜索" />
+                                <Link href="detection_gather" title="生物检测信息汇总" />
+                                <Link href="detection_info" title="生物检测详情" />
+                                <Link href="toxicity_prediction" title="毒性预测" />
+                            </Anchor>
+                        </div>
                 </div>
-
-                <div className="dataContent">
-                    <h3 style={{ marginBottom: '18px' }}>搜索结果</h3>
-                    {this.renderTableData()}
-                    
-                  
-                </div>
-                <div className="dataContent">
+                <div className="dataContent" id="detection_gather">
+                    <h3>生物检测信息汇总</h3>
                     {this.renderBiodetectionTableData()}
                 </div>
-
-                {this.renderGraph()}
-
-                <div className="dataContent">
+                <div className="dataContent" id="detection_info">
+                    <h3>生物检测详情</h3>
+                    {this.renderTableData()}
+                </div>
+                <div className="dataContent" id="toxicity_prediction">
+                    <h3>毒性预测</h3>
                     {this.renderAllTableData()}
                 </div>
+                <BackTop/>
             </div>
-
         )
     }
 }
