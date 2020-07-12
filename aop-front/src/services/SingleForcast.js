@@ -1,7 +1,8 @@
 import { serverIP } from "../utils/GlobalConstants"
 
 export function fetchToxInfo(params) {
-    return fetch(`${serverIP}/api/tox/${params.name}?size=${params.size}&page=${params.page}`, {
+    console.log(params)
+    return fetch(`${serverIP}/api/tox/${params.name}?size=${params.size}&page=${params.page}&sort=${params.ac50Sort}&sort=${params.resSort}`, {
         method: 'GET',
         mode: "cors",
         headers: new Headers({
@@ -61,7 +62,8 @@ export function fetchKEandAO(bioassay,effect) {
 }
 
 export function fetchAllInfo(params) {
-    return fetch(`${serverIP}/api/tox/all?size=${params.size}&page=${params.page}`, {
+    console.log(params)
+    return fetch(`${serverIP}/api/tox/all?size=${params.size}&page=${params.page}&sort=${params.ac50Sort}&sort=${params.resSort}`, {
         method: 'GET',
         mode: "cors",
         headers: new Headers({

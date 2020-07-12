@@ -67,7 +67,7 @@ class App extends React.Component {
                 <Menu.Item key="aops">AOP</Menu.Item>
               </SubMenu>
               <Menu.Item key="singleForcast" style={{ height: 60 }}>
-                化学品毒性预测
+              化学物质毒性预测
               </Menu.Item>
               {/* <Menu.Item key="environment" style={{ height: 60 }}>
                 环境诊断

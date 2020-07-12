@@ -3,6 +3,7 @@ import { Input, Row, Col, Form, Button, Table, Anchor, BackTop } from 'antd'
 import './SingleForcast.less'
 import { fetchToxInfo, fetchAllInfo, fetchToxReport, fetchToxTableAll } from '../services/SingleForcast'
 import echarts from 'echarts'
+import { serverIP } from "../utils/GlobalConstants"
 
 const { Link } = Anchor;
 const MODULE_TYPE = {
@@ -28,6 +29,8 @@ class SingleForcast extends React.Component<any, any> {
             pageSize: 20,
             total: 0,
             load: true,
+            ac50Sort:"",
+            resSort:"hasRes,DESC",
         }
 
     }
@@ -55,10 +58,10 @@ class SingleForcast extends React.Component<any, any> {
         this.getAllToxData();
     }
     getAllToxData() {
-        const { current, pageSize } = this.state;
-        console.log(current + " " + pageSize);
+        const { current, pageSize,ac50Sort,resSort } = this.state;
         this.setState({ loading: true })
-        fetchAllInfo({ size: pageSize, page: current }).then(res => {
+
+        fetchAllInfo({ size: pageSize, page: current,ac50Sort:ac50Sort,resSort:resSort}).then(res => {
             this.setState({
                 loading: false,
                 tableData: res.content,
@@ -84,11 +87,11 @@ class SingleForcast extends React.Component<any, any> {
             <React.Fragment>
                 <Row gutter={16}>
                     <Col span={8}>
-                        <Form.Item label={'名称'} className='line'>
+                        <Form.Item label={'名称'} className='line' >
                             {getFieldDecorator('name', {
                                 rules: [],
                             })(
-                                <Input placeholder="输入CAS号或者英文名称" style={{ width: 300 }} />
+                                <Input id='name' placeholder="输入CAS号或者英文名称" style={{ width: 300 }} />
                             )}
                         </Form.Item>
                     </Col>
@@ -99,13 +102,14 @@ class SingleForcast extends React.Component<any, any> {
     renderTableData() {
         const { pageSize, current, total, loading } = this.state
         const columns = [
-
-            // {
-            //     title: 'ID',
-            //     dataIndex: 'id',
-            // },
             {
-                title: '化学品名称',
+                title: '序列号',
+                width: '10%',
+                render:(text,record,index)=> `${current*20+index+1}`,
+              },
+        
+            {
+                title: '化学物质名称',
                 dataIndex: 'chemical',
             },
             {
@@ -131,7 +135,7 @@ class SingleForcast extends React.Component<any, any> {
             {
                 title: '50%的最大生物活性浓度AC50（μM）',
                 dataIndex: 'ac50',
-                sorter: (a, b) => a.ac50 - b.ac50,
+                sorter: (a, b) => true,
             },
             {
                 title: '操作',
@@ -153,16 +157,51 @@ class SingleForcast extends React.Component<any, any> {
                 loading={this.state.loading}
                 columns={columns}
                 bordered
+                onChange={this.handleTableChange}
                 pagination={paginationProps}
 
             />
         )
     }
+    handleTableChange= (pagination, filters, sorter) =>{
+        const { pageSize, current } = this.state;
+        const order=sorter.order;
+        const ac50Sort="ac50,"+(order.substr(0,order.indexOf("c")+1)).toUpperCase();
+        const resSort="";
+        const isAll = this.state.isAll;
+        this.setState({
+            ac50Sort,
+            resSort,
+        }, () => { console.log() })
+        if(isAll){
+            fetchAllInfo({ size: pageSize, page: current,ac50Sort:ac50Sort,resSort:resSort }).then(res => {
+                this.setState({
+                    loading: false,
+                    tableData: res.content,
+                    total: res.totalElements,
+                })
+            }) //传的参数
+        
+        }else{
+        this.props.form.validateFields((err, values) => {
+            if (err) { return }
+            let items = { name: values.name, page: current, size: pageSize,ac50Sort:ac50Sort,resSort:resSort }
+            fetchToxInfo(items).then(res => {
+                console.log(res)
+                this.setState({
+                    loading: false,
+                    tableData: res.content,
+                    total: res.totalElements,
+                })
+            })
+        })
+    }
+        
+    }
 
     changePage = (current: number) => {
         const isAll = this.state.isAll;
         if (isAll) {
-            console.log(isAll)
             this.setState({
                 current: current,
             }, () => this.getAllToxData())
@@ -220,10 +259,10 @@ class SingleForcast extends React.Component<any, any> {
     renderAllTableData() {
         const columns = [
             {
-                title: '化学品生物检测',
+                title: '化学物质生物检测',
                 children: [
                     {
-                        title: '化学品名称',
+                        title: '化学物质名称',
                         dataIndex: 'chemical',
                         render: (value, row) => {
                             return {
@@ -285,6 +324,7 @@ class SingleForcast extends React.Component<any, any> {
                     {
                         title: 'AC50(μM)',
                         dataIndex: 'ac50',
+                        sorter: (a, b) => a.ac50 - b.ac50,
                         render: (value, row) => {
                             return {
                                 children: value,
@@ -388,6 +428,15 @@ class SingleForcast extends React.Component<any, any> {
             />
         )
     }
+    downloadFile = () => {
+        const name=this.state.allTableData[0].chemical;
+        const cas=this.state.allTableData[0].casrn;
+        var filename = cas+"-"+name+".xlsx";
+        var filepath = `${serverIP}/result/`+filename;
+        document.getElementById("export").setAttribute("href",filepath)
+        document.getElementById("export").setAttribute("download",filename)
+        document.getElementById("export").click();
+    }
 
     handleClickRow = (record) => {
         var path = "/keao/" + encodeURI(encodeURI(record.bioassay)) + "/" + record.effect;
@@ -399,10 +448,10 @@ class SingleForcast extends React.Component<any, any> {
     }
 
     getToxTableData() {
-        const { pageSize, current } = this.state;
+        const { pageSize, current,ac50Sort,resSort } = this.state;
         this.props.form.validateFields((err, values) => {
             if (err) { return }
-            let items = { name: values.name, page: current, size: pageSize }
+            let items = { name: values.name, page: current, size: pageSize,ac50Sort:ac50Sort,resSort:resSort  }
             fetchToxInfo(items).then(res => {
                 this.setState({
                     loading: false,
@@ -592,7 +641,7 @@ class SingleForcast extends React.Component<any, any> {
                
                 <div className="search" id="search">
                     <Form className='ant-advanced-search-form' >
-                        <h3>化学品搜索</h3>
+                        <h3>化学物质搜索</h3>
                         {this.renderSearchForm()}
                     </Form>
                     <div style={{ textAlign: 'right' }}>
@@ -605,7 +654,7 @@ class SingleForcast extends React.Component<any, any> {
                     <div >
                             <h4 style={{ marginBottom: 10 }}>快速到达：</h4>
                             <Anchor onClick={this.handleClickFun} getContainer={() => document.getElementById('wholePage')} affix={false}>
-                                <Link href="search" title="化学品搜索" />
+                                <Link href="search" title="化学物质搜索" />
                                 <Link href="detection_gather" title="生物检测信息汇总" />
                                 <Link href="detection_info" title="生物检测详情" />
                                 <Link href="toxicity_prediction" title="毒性预测" />
@@ -622,6 +671,10 @@ class SingleForcast extends React.Component<any, any> {
                 </div>
                 <div className="dataContent" id="toxicity_prediction">
                     <h3>毒性预测</h3>
+                    <div style={{ textAlign: 'right',marginBottom:20 }}>
+                        <Button type="primary"  onClick={this.downloadFile} >导出数据</Button>
+                        <a id="export" type="hidden" download="" href="" ></a>
+                    </div>
                     {this.renderAllTableData()}
                 </div>
                 <BackTop/>
