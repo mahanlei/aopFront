@@ -29,22 +29,10 @@ class Dashboard extends React.Component {
     }
 
     downloadHelp = () => {
-        fetch(`${serverIP}/api/download/instruction`, {
-            method: 'GET',
-            mode: 'cors',
-            headers: new Headers({
-                'Content-type': 'application/json',
-            }),
-        }).then(res => res.blob()).then((blob) => {
-            const url = window.URL.createObjectURL(blob)
-            const a = document.createElement('a')
-            a.href = url
-            a.download = '用户使用说明.pdf'
-            a.click()
-            window.URL.revokeObjectURL(url)
-        }).catch((err) => {
-            return err
-        })
+        const a = document.createElement('a')
+        a.href = `${serverIP}/api/download/instruction`
+        a.download = '用户使用说明.pdf'
+        a.click()           
     }
 
 render() {
